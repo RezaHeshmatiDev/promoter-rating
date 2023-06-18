@@ -44,7 +44,7 @@ const ListItem = ({ item }: { item: Promoter }) => {
           <Box display={"flex"} alignItems={"center"}>
             <Avatar
               variant={"square"}
-              // src={item.avatar || ""}
+              src={item.promoterAvatar || ""}
               sx={{ height: "auto", width: "60px" }}
             />
             <Typography ml={1}>{item.promoterName}</Typography>

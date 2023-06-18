@@ -23,6 +23,7 @@ export interface Promoter {
   barCode: string;
   customerName: string;
   promoterID: number;
+  promoterAvatar: string;
   promoterCode: string;
   promoterName: string;
   activityLocationName: string;
