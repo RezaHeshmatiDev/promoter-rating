@@ -31,4 +31,6 @@ export interface Promoter {
   cashName: string;
   cashTurn: number;
   rate: number;
+  rateSum: number;
+  invoiceCount: number;
 }

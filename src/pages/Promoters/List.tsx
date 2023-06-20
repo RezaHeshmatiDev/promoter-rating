@@ -26,8 +26,9 @@ const List = () => {
       tableColumns={[
         { text: "شناسه" },
         { text: "نام فروشنده" },
-        { text: "شناسه فاکتور" },
-        { text: "امتیاز" },
+        { text: "تعداد فاکتور" },
+        { text: "مجموع امتیاز" },
+        { text: "میانگین امتیاز" },
       ]}
     >
       {promoters.map((item) => {
@@ -57,10 +58,13 @@ const ListItem = ({ item }: { item: Promoter }) => {
           </Box>
         </TableCell>
         <TableCell>
-          <Typography>{item.invoiceID}</Typography>
+          <Typography>{item.invoiceCount}</Typography>
         </TableCell>
         <TableCell>
-          <Typography>{item.rate}</Typography>
+          <Typography>{item.rateSum}</Typography>
+        </TableCell>
+        <TableCell>
+          <Typography>{item.rateSum / item.invoiceCount}</Typography>
         </TableCell>
       </TableRow>
     </>
