@@ -16,7 +16,7 @@ class Snack extends Component<Props> {
     const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "error",
-      onClick: () => closeSnackbar(),
+      onClose: () => closeSnackbar(),
       ...options,
     });
   }
@@ -25,7 +25,7 @@ class Snack extends Component<Props> {
     const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "info",
-      onClick: () => closeSnackbar(),
+      onClose: () => closeSnackbar(),
       ...options,
     });
   }
@@ -34,7 +34,7 @@ class Snack extends Component<Props> {
     const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "warning",
-      onClick: () => closeSnackbar(),
+      onClose: () => closeSnackbar(),
       ...options,
     });
   }
@@ -43,7 +43,7 @@ class Snack extends Component<Props> {
     const { enqueueSnackbar, closeSnackbar } = Snack.myComponentInstance.props;
     enqueueSnackbar(message, {
       variant: "success",
-      onClick: () => closeSnackbar(),
+      onClose: () => closeSnackbar(),
       ...options,
     });
   }

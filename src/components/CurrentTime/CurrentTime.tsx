@@ -5,7 +5,7 @@ import { getCurrentTime } from "../../utils/Functions";
 
 const CurrentTime = () => {
   const [currentTime, setCurrentTime] = useState<string>(getCurrentTime());
-  const timeInterval = useRef<unknown>(null);
+  const timeInterval = useRef<any>(null);
 
   const theme = useTheme();
 
