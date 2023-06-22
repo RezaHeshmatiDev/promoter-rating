@@ -37,7 +37,9 @@ const PromoterDetails = () => {
   const getDetails = useCallback(() => {
     setLoading(true);
     apiGetPromoterDetails(promoterId)
-      .then((result: Promoter[]) => setPromoterDetails(result))
+      .then((result: Promoter[]) => {
+        setPromoterDetails(result);
+      })
       .finally(() => setLoading(false));
   }, [promoterId]);
 
@@ -62,18 +64,18 @@ const PromoterDetails = () => {
           <CardContent>
             <FormControl fullWidth variant="outlined">
               <InputLabel id="select-promoter-label">
-                {"انتخاب صندوق"}
+                {"بازاریاب ها"}
               </InputLabel>
               <Select
                 id="select-promoter"
                 labelId="select-promoter-label"
                 value={promoterId}
                 onChange={handlePrmoterChange}
-                label="انتخاب صندوق"
+                label="بازاریاب ها"
               >
-                {promoters.map((item: Promoter) => {
+                {promoters.map((item: Promoter, index: number) => {
                   return (
-                    <MenuItem key={item.promoterID} value={item.promoterID}>
+                    <MenuItem key={index} value={item.promoterID}>
                       {item.promoterName}
                     </MenuItem>
                   );
@@ -88,12 +90,12 @@ const PromoterDetails = () => {
                   { text: "شناسه" },
                   { text: "نام فروشنده" },
                   { text: "شناسه فاکتور" },
-                  { text: "مجموع امتیاز" },
+                  { text: "امتیاز" },
                   { text: "نام مشتری" },
                 ]}
               >
-                {promoterDetails.map((item) => {
-                  return <ListItem key={item.promoterID} item={item} />;
+                {promoterDetails.map((item, index) => {
+                  return <ListItem key={index} item={item} />;
                 })}
 
                 <LoadingModal visible={loading} />
@@ -119,7 +121,7 @@ const ListItem = ({
   onClickItem?(): void;
 }) => {
   return (
-    <TableRow hover onClick={onClickItem}>
+    <TableRow onClick={onClickItem}>
       <TableCell>
         <Typography>{item.promoterID}</Typography>
       </TableCell>
