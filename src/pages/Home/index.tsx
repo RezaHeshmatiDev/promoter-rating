@@ -57,7 +57,11 @@ const Home = () => {
   };
 
   return (
-    <Page title="اپلیکیشن" hasBack onClickBack={onClickBack}>
+    <Page
+      title="اپلیکیشن"
+      hasBack={!cashTurnsVisible}
+      onClickBack={onClickBack}
+    >
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           {cashTurnsVisible ? (

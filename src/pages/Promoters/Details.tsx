@@ -10,22 +10,26 @@ import {
   CardContent,
   FormControl,
   InputLabel,
-  List,
   MenuItem,
   Select,
   SelectChangeEvent,
   useTheme,
+  TableCell,
+  Typography,
+  TableRow,
+  Avatar,
 } from "@mui/material";
 import LoadingModal from "../../components/LoadingModal";
+import Table from "../Table/Table";
 
 const PromoterDetails = () => {
   const { id }: any = useParams();
   const { state } = useLocation();
 
-  const { promoters } = state;
+  const { promoters }: { promoters: Promoter[] } = state;
 
   const [promoterId, setPromoterId] = useState<number>(id);
-  const [promoterDetails, setPromoterDetails] = useState<Promoter | null>(null);
+  const [promoterDetails, setPromoterDetails] = useState<Promoter[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const theme = useTheme();
@@ -33,7 +37,7 @@ const PromoterDetails = () => {
   const getDetails = useCallback(() => {
     setLoading(true);
     apiGetPromoterDetails(promoterId)
-      .then((result: Promoter) => setPromoterDetails(result))
+      .then((result: Promoter[]) => setPromoterDetails(result))
       .finally(() => setLoading(false));
   }, [promoterId]);
 
@@ -49,8 +53,10 @@ const PromoterDetails = () => {
     setLoading(!loading);
   };
 
+  const headerTitle = promoterDetails[0]?.promoterName;
+
   return (
-    <Page title={"نام بازاریاب میاد اینجا"} hasBack={true}>
+    <Page title={headerTitle} hasBack={true}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
@@ -76,7 +82,23 @@ const PromoterDetails = () => {
             </FormControl>
           </CardContent>
           <Card sx={{ borderRadius: 2 }}>
-            <CardContent></CardContent>
+            <CardContent>
+              <Table
+                tableColumns={[
+                  { text: "شناسه" },
+                  { text: "نام فروشنده" },
+                  { text: "شناسه فاکتور" },
+                  { text: "مجموع امتیاز" },
+                  { text: "نام مشتری" },
+                ]}
+              >
+                {promoterDetails.map((item) => {
+                  return <ListItem key={item.promoterID} item={item} />;
+                })}
+
+                <LoadingModal visible={loading} />
+              </Table>
+            </CardContent>
           </Card>
         </Card>
       </Box>
@@ -86,6 +108,41 @@ const PromoterDetails = () => {
         toggleVisibility={toggleLoadingVisibility}
       />
     </Page>
+  );
+};
+
+const ListItem = ({
+  item,
+  onClickItem,
+}: {
+  item: Promoter;
+  onClickItem?(): void;
+}) => {
+  return (
+    <TableRow hover onClick={onClickItem}>
+      <TableCell>
+        <Typography>{item.promoterID}</Typography>
+      </TableCell>
+      <TableCell>
+        <Box display={"flex"} alignItems={"center"}>
+          <Avatar
+            variant={"square"}
+            src={item.promoterAvatar || ""}
+            sx={{ height: "auto", width: "60px" }}
+          />
+          <Typography ml={1}>{item.promoterName}</Typography>
+        </Box>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.invoiceID}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.rate}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.customerName}</Typography>
+      </TableCell>
+    </TableRow>
   );
 };
 

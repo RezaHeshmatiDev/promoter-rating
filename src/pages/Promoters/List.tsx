@@ -36,7 +36,7 @@ const List = () => {
     >
       {promoters.map((item) => {
         const onClickItem = () => {
-          navigate(`/promoter/${item.promoterID}`, { state: { promoters } });
+          navigate(`/promoters/${item.promoterID}`, { state: { promoters } });
         };
         return (
           <ListItem
@@ -57,7 +57,7 @@ const ListItem = ({
   onClickItem,
 }: {
   item: Promoter;
-  onClickItem(): void;
+  onClickItem?(): void;
 }) => {
   return (
     <TableRow hover onClick={onClickItem}>
