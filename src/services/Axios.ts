@@ -1,6 +1,6 @@
 import _axios from "axios";
 
-export const baseURL = "http://172.16.1.145:3000";
+export const baseURL = "http://api.rating.hamyaransystem.com/";
 
 // const getToken = () => {
 //   return AuthService.accessToken;
