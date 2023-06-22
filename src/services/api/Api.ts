@@ -31,6 +31,16 @@ export const apiGetAllPromoters = (): Promise<any> => {
 };
 
 /**
+ * @param {number} id
+ * @returns {Promise}
+ */
+export const apiGetPromoterDetails = (id: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.get(`/promoters/${id}`).then(resolve).catch(reject);
+  });
+};
+
+/**
  *
  * @param {number} promoterId
  * @param {number} score

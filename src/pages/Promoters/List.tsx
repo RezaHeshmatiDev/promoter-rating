@@ -5,10 +5,13 @@ import { Promoter } from "../../utils/Interfaces";
 import Table from "../Table/Table";
 import { apiGetAllPromoters } from "../../services/api/Api";
 import LoadingModal from "../../components/LoadingModal";
+import { useNavigate } from "react-router-dom";
 
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getPromoters();
@@ -32,7 +35,16 @@ const List = () => {
       ]}
     >
       {promoters.map((item) => {
-        return <ListItem key={item.promoterID} item={item} />;
+        const onClickItem = () => {
+          navigate(`/promoter/${item.promoterID}`, { state: { promoters } });
+        };
+        return (
+          <ListItem
+            key={item.promoterID}
+            item={item}
+            onClickItem={onClickItem}
+          />
+        );
       })}
 
       <LoadingModal visible={loading} />
@@ -40,34 +52,38 @@ const List = () => {
   );
 };
 
-const ListItem = ({ item }: { item: Promoter }) => {
+const ListItem = ({
+  item,
+  onClickItem,
+}: {
+  item: Promoter;
+  onClickItem(): void;
+}) => {
   return (
-    <>
-      <TableRow>
-        <TableCell>
-          <Typography>{item.promoterID}</Typography>
-        </TableCell>
-        <TableCell>
-          <Box display={"flex"} alignItems={"center"}>
-            <Avatar
-              variant={"square"}
-              src={item.promoterAvatar || ""}
-              sx={{ height: "auto", width: "60px" }}
-            />
-            <Typography ml={1}>{item.promoterName}</Typography>
-          </Box>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.invoiceCount}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.rateSum}</Typography>
-        </TableCell>
-        <TableCell>
-          <Typography>{item.rateSum / item.invoiceCount}</Typography>
-        </TableCell>
-      </TableRow>
-    </>
+    <TableRow hover onClick={onClickItem}>
+      <TableCell>
+        <Typography>{item.promoterID}</Typography>
+      </TableCell>
+      <TableCell>
+        <Box display={"flex"} alignItems={"center"}>
+          <Avatar
+            variant={"square"}
+            src={item.promoterAvatar || ""}
+            sx={{ height: "auto", width: "60px" }}
+          />
+          <Typography ml={1}>{item.promoterName}</Typography>
+        </Box>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.invoiceCount}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.rateSum}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.rateSum / item.invoiceCount}</Typography>
+      </TableCell>
+    </TableRow>
   );
 };
 
