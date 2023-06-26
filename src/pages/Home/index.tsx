@@ -7,6 +7,7 @@ import CashTurns from "./CashTurns";
 import { CashTurn, Promoter } from "../../utils/Interfaces";
 import Content from "./Content";
 import LoadingModal from "../../components/LoadingModal";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [cashTurns, setCashTurns] = useState<CashTurn[]>([]);
@@ -18,6 +19,8 @@ const Home = () => {
   const [invoiceID, setInvoiceID] = useState<number>(0);
   const [customerName, setCustomerName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+
+  const navigate = useNavigate();
 
   const theme = useTheme();
 
@@ -53,15 +56,15 @@ const Home = () => {
   };
 
   const onClickBack = () => {
-    setCashTurnsVisible(true);
+    if (!cashTurnsVisible) {
+      setCashTurnsVisible(true);
+    } else {
+      navigate(-1);
+    }
   };
 
   return (
-    <Page
-      title="اپلیکیشن"
-      hasBack={!cashTurnsVisible}
-      onClickBack={onClickBack}
-    >
+    <Page title="اپلیکیشن" onClickBack={onClickBack}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           {cashTurnsVisible ? (

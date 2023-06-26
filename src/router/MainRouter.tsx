@@ -9,6 +9,7 @@ import Home from "../pages/Home";
 import PageNotFound from "../pages/404";
 import Promoters from "../pages/Promoters";
 import PromoterDetails from "../pages/Promoters/Details";
+import Dashboard from "../pages/Dashboard";
 
 const MainRouter = () => {
   return (
@@ -17,7 +18,8 @@ const MainRouter = () => {
         {/**
          * Home
          */}
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/home" element={<Home />} />
         <Route path="/promoters" element={<Promoters />} />
         <Route path="/promoters/:id" element={<PromoterDetails />} />
