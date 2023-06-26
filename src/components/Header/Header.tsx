@@ -1,9 +1,12 @@
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { Box, Grid, Typography, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import { HeaderHeight } from "../../utils/Constants";
+import Sidebar from "../../layouts/Sidebar";
+import { SidebarContext } from "../../contexts/SidebarContext";
 
 export interface HeaderProps {
   title: string;
@@ -22,6 +25,8 @@ const Header = ({
   rightContent,
   leftContent,
 }: HeaderProps) => {
+  const { toggleSidebar } = useContext(SidebarContext);
+
   const navigate = useNavigate();
 
   const theme = useTheme();
@@ -53,7 +58,10 @@ const Header = ({
         color: theme.palette.common.white,
       }}
     >
-      <Box flex={0.5}>{!!rightContent && rightContent}</Box>
+      <Box flex={0.5}>
+        {true && <MenuIcon onClick={toggleSidebar} />}
+        {!!rightContent && rightContent}
+      </Box>
       <Box flex={1} display={"flex"} justifyContent={"center"}>
         <Typography>{title}</Typography>
       </Box>
@@ -61,6 +69,8 @@ const Header = ({
         {hasBack && <ArrowBackIcon onClick={back} />}
         {!!leftContent && leftContent}
       </Box>
+
+      <Sidebar />
     </Grid>
   );
 };

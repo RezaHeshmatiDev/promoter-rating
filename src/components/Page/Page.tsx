@@ -13,7 +13,7 @@ const Page = ({ children, sx, ...props }: Props) => {
   return (
     <>
       <Header {...props} />
-      <Box sx={sx} style={{ marginTop: HeaderHeight }}>
+      <Box sx={sx} style={{ paddingTop: HeaderHeight }}>
         {children}
       </Box>
     </>
