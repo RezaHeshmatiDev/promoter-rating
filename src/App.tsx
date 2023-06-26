@@ -6,6 +6,9 @@ import ThemeProvider from "./theme/ThemeProvider";
 import createEmotionCache from "./createEmotionCache";
 import { SnackbarProvider } from "notistack";
 import SnackHOC from "./components/Snack/SnackHOC";
+import { SidebarProvider } from "./contexts/SidebarContext";
+import { LoginProvider } from "./contexts/LoginContext";
+import Auth from "./components/Auth/Auth";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -21,8 +24,13 @@ const App = () => {
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           TransitionComponent={Grow}
         >
-          <SnackHOC />
-          <MainRouter />
+          <LoginProvider>
+            <SidebarProvider>
+              <SnackHOC />
+              <Auth />
+              <MainRouter />
+            </SidebarProvider>
+          </LoginProvider>
         </SnackbarProvider>
       </ThemeProvider>
     </CacheProvider>

@@ -3,6 +3,23 @@ import Axios from "../Axios";
 /**
  * @returns {Promise}
  */
+export const apiPostLogin = (
+  username: string,
+  password: string
+): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+
+    formData.append("userName", username);
+    formData.append("password", password);
+
+    Axios.post("/auth/login", formData).then(resolve).catch(reject);
+  });
+};
+
+/**
+ * @returns {Promise}
+ */
 export const apiGetCacheTurns = (): Promise<any> => {
   return new Promise((resolve, reject) => {
     Axios.get("/cash-turns").then(resolve).catch(reject);
