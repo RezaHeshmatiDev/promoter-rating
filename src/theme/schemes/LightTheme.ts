@@ -137,6 +137,13 @@ export const LightTheme = createTheme({
     fontFamily: "SNM",
   },
   components: {
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          cursor: "pointer",
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         contained: {

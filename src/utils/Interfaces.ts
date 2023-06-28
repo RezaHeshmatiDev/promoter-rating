@@ -34,3 +34,10 @@ export interface Promoter {
   rateSum: number;
   invoiceCount: number;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  phone: string;
+  isAdmin: boolean;
+}
