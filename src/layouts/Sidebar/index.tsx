@@ -1,5 +1,17 @@
 import { useContext } from "react";
-import { Box, Drawer, useTheme, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Drawer,
+  useTheme,
+  MenuItem,
+  Typography,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import CreditCardIcon from "@mui/icons-material/CreditCard";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 import { SidebarContext } from "../../contexts/SidebarContext";
 
@@ -7,7 +19,27 @@ const Sidebar = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
 
+  const navigate = useNavigate();
+
   const theme = useTheme();
+
+  const SidebarList = [
+    {
+      url: "/dashboard",
+      title: "داشبورد",
+      icon: DashboardIcon,
+    },
+    {
+      url: "/cash-turns",
+      title: "صندوق ها",
+      icon: CreditCardIcon,
+    },
+    {
+      url: "/promoters",
+      title: "بازاریاب ها",
+      icon: PeopleAltIcon,
+    },
+  ];
 
   return (
     <Drawer
@@ -19,12 +51,35 @@ const Sidebar = () => {
     >
       <Box width={200}>
         <Box
-          height={100}
           display={"flex"}
+          flexDirection={"column"}
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Typography variant={"h5"}>{"اپلیکیشن"}</Typography>
+          <Typography my={4} variant="h4">
+            {"اپلیکیشن"}
+          </Typography>
+          {SidebarList.map((item) => {
+            const Icon = item.icon;
+
+            const onClickItem = () => {
+              closeSidebar();
+              navigate(item.url);
+            };
+
+            return (
+              <MenuItem
+                sx={{ width: "100%" }}
+                key={item.url}
+                onClick={onClickItem}
+              >
+                <ListItemIcon>
+                  <Icon fontSize={"small"} />
+                </ListItemIcon>
+                <ListItemText>{item.title}</ListItemText>
+              </MenuItem>
+            );
+          })}
         </Box>
       </Box>
     </Drawer>
