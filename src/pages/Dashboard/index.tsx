@@ -7,7 +7,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const navigateToHome = () => {
-    navigate("/home");
+    navigate("/cash-turns");
   };
 
   return (
