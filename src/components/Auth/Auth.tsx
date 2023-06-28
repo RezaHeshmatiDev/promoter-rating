@@ -8,12 +8,11 @@ import {
   FormControl,
   InputLabel,
   TextField,
-  Button,
   useTheme,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import { LoginContext } from "../../contexts/LoginContext";
-import { LoadingButton } from "@mui/lab";
 import { apiPostLogin } from "../../services/api/Api";
 import Snack from "../Snack/Snack";
 
@@ -22,11 +21,15 @@ const Auth = () => {
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { loginToggle, toggleLogin } = useContext(LoginContext);
+  const { loginToggle, toggleLogin, submitUserData } = useContext(LoginContext);
 
   const theme = useTheme();
 
   useEffect(() => {
+    if (location.pathname.includes("promoters-rating")) {
+      return;
+    }
+
     if (!loginToggle) {
       toggleLogin();
     }
@@ -44,7 +47,10 @@ const Auth = () => {
     if (username.length > 0 && password.length > 0) {
       setLoading(true);
       apiPostLogin(username, password)
-        .then(toggleLogin)
+        .then((result) => {
+          submitUserData(result.data);
+          toggleLogin();
+        })
         .finally(() => setLoading(false));
     } else {
       Snack.warn("لطفا نام کاربری و پسوورد خود را وارد کنید.");
