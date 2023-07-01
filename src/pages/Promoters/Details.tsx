@@ -29,7 +29,7 @@ const PromoterDetails = () => {
   const { promoters }: { promoters: Promoter[] } = state;
 
   const [promoterId, setPromoterId] = useState<number>(id);
-  const [promoterDetails, setPromoterDetails] = useState<{ promoterName: string; promoterID: number; data: Promoter[] }>({ promoterName: "", promoterID: 0, data: [] });
+  const [promoterDetails, setPromoterDetails] = useState<Promoter[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const theme = useTheme();
@@ -37,7 +37,7 @@ const PromoterDetails = () => {
   const getDetails = useCallback(() => {
     setLoading(true);
     apiGetPromoterDetails(promoterId)
-      .then((result: { promoterName: string; promoterID: number; data: Promoter[] }) => {
+      .then((result: Promoter[]) => {
         setPromoterDetails(result);
       })
       .finally(() => setLoading(false));
@@ -55,7 +55,7 @@ const PromoterDetails = () => {
     setLoading(!loading);
   };
 
-  const headerTitle = promoterDetails?.promoterName;
+  const headerTitle = promoterDetails[0]?.promoterName;
 
   return (
     <Page title={headerTitle} hasBack={true}>
@@ -87,17 +87,14 @@ const PromoterDetails = () => {
             <CardContent>
               <Table
                 tableColumns={[
+                  { text: "شناسه" },
+                  { text: "نام فروشنده" },
                   { text: "شناسه فاکتور" },
-                  { text: "تاریخ فاکتور" },
                   { text: "امتیاز" },
                   { text: "نام مشتری" },
-                  { text: "شماره تماس مشتری" },
-                  { text: "ملاحضات" },
-
-
                 ]}
               >
-                {promoterDetails.data.map((item, index) => {
+                {promoterDetails.map((item, index) => {
                   return <ListItem key={index} item={item} />;
                 })}
 
@@ -126,25 +123,27 @@ const ListItem = ({
   return (
     <TableRow onClick={onClickItem}>
       <TableCell>
-        <Typography>{item.invoiceID}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{item.invoiceDate}</Typography>
+        <Typography>{item.promoterID}</Typography>
       </TableCell>
       <TableCell>
         <Box display={"flex"} alignItems={"center"}>
-
-          <Typography ml={1}>{item.rate}</Typography>
+          <Avatar
+            variant={"square"}
+            src={item.promoterAvatar || ""}
+            sx={{ height: "auto", width: "60px" }}
+          />
+          <Typography ml={1}>{item.promoterName}</Typography>
         </Box>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.invoiceID}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.rate}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.customerName}</Typography>
       </TableCell>
-
-      <TableCell>
-        <Typography>{item.customerCellPhone}</Typography>
-      </TableCell>
-
     </TableRow>
   );
 };

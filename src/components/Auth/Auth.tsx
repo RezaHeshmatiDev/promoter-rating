@@ -15,16 +15,13 @@ import { LoadingButton } from "@mui/lab";
 import { LoginContext } from "../../contexts/LoginContext";
 import { apiPostLogin } from "../../services/api/Api";
 import Snack from "../Snack/Snack";
-import { setToken } from "../../utils/tokenFuncs";
 
 const Auth = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { loginToggle, toggleLogin,
-    //  submitUserData
-  } = useContext(LoginContext);
+  const { loginToggle, toggleLogin, submitUserData } = useContext(LoginContext);
 
   const theme = useTheme();
 
@@ -51,11 +48,7 @@ const Auth = () => {
       setLoading(true);
       apiPostLogin(username, password)
         .then((result) => {
-          console.log({
-            result
-          })
-          // submitUserData(result.data);
-          setToken(result.access_token);
+          submitUserData(result.data);
           toggleLogin();
         })
         .finally(() => setLoading(false));
