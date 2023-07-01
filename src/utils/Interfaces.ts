@@ -33,6 +33,7 @@ export interface Promoter {
   rate: number;
   rateSum: number;
   invoiceCount: number;
+  customerCellPhone: number;
 }
 
 export interface User {

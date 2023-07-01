@@ -5,7 +5,7 @@ type LoginContext = {
   loginToggle: boolean;
   toggleLogin: () => void;
   closeLogin: () => void;
-  submitUserData: (user: User) => void;
+  // submitUserData: (user: User) => void;
 };
 
 export const LoginContext = createContext<LoginContext>({} as LoginContext);
@@ -15,20 +15,20 @@ type Props = {
 };
 
 export function LoginProvider({ children }: Props) {
-  const user: string | null = localStorage.getItem("userData");
-  const [userData, setUserData] = useState<User | null>(
-    JSON.parse(user || "null")
-  );
+  // const user: string | null = localStorage.getItem("userData");
+  // const [userData, setUserData] = useState<User | null>(
+  //   JSON.parse(user || "null")
+  // );
 
   const [loginToggle, setLoginToggle] = useState<boolean>(false);
 
-  useEffect(() => {
-    localStorage.setItem("userData", JSON.stringify(userData));
-  }, [userData]);
+  // useEffect(() => {
+  //   localStorage.setItem("userData", JSON.stringify(userData));
+  // }, [userData]);
 
-  const submitUserData = (user: User) => {
-    setUserData(user);
-  };
+  // const submitUserData = (user: User) => {
+  //   setUserData(user);
+  // };
 
   const toggleLogin = () => {
     setLoginToggle(!loginToggle);
@@ -40,7 +40,10 @@ export function LoginProvider({ children }: Props) {
 
   return (
     <LoginContext.Provider
-      value={{ loginToggle, toggleLogin, closeLogin, submitUserData }}
+      value={{
+        loginToggle, toggleLogin, closeLogin
+        // , submitUserData
+      }}
     >
       {children}
     </LoginContext.Provider>

@@ -1,6 +1,8 @@
 import _axios from "axios";
+import { getToken } from "../utils/tokenFuncs";
 
 export const baseURL = "http://api.rating.hamyaransystem.com/";
+// export const baseURL = "http://localhost:3000/";
 
 // const getToken = () => {
 //   return AuthService.accessToken;
@@ -13,13 +15,13 @@ const Axios = _axios.create({
   },
 });
 
-// Axios.interceptors.request.use((config) => {
-//   const token = getToken();
-//   if (config.headers) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+Axios.interceptors.request.use((config) => {
+  const token = getToken();
+  if (config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 Axios.interceptors.response.use(
   (response) => {
