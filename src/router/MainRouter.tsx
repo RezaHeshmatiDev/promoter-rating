@@ -29,7 +29,10 @@ const MainRouter = () => {
         />
         <Route path="/promoters" element={<Promoters />} />
         <Route path="/promoters/:id" element={<PromoterDetails />} />
-        <Route path="/invoices/:id" element={<Invoices />} />
+        <Route
+          path="/promoters/:promoterID/invoices/:invoiceID"
+          element={<Invoices />}
+        />
 
         {/**
          * Page 404 not found

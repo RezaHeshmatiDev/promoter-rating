@@ -22,7 +22,7 @@ export const apiPostLogin = (
  */
 export const apiGetCacheTurns = (): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get("/cash-turns").then(resolve).catch(reject);
+    Axios.get("/cashs").then(resolve).catch(reject);
   });
 };
 
@@ -33,7 +33,18 @@ export const apiGetCacheTurns = (): Promise<any> => {
  */
 export const apiGetPromoters = (id: number): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get(`/cash-turns/${id}`).then(resolve).catch(reject);
+    Axios.get(`/cashs/${id}`).then(resolve).catch(reject);
+  });
+};
+
+/**
+ *
+ * @param {number} id Cash turn id
+ * @returns {Promise}
+ */
+export const apiGetInvoices = (id: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.get(`/cashs/invoice/${id}`).then(resolve).catch(reject);
   });
 };
 
