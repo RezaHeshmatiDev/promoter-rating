@@ -1,5 +1,6 @@
 import { useState, ReactNode, createContext, useEffect } from "react";
 import { User } from "../utils/Interfaces";
+import { getUser, setUser } from "../utils/tokenFuncs";
 
 type LoginContext = {
   loginToggle: boolean;
@@ -15,15 +16,13 @@ type Props = {
 };
 
 export function LoginProvider({ children }: Props) {
-  const user: string | null = localStorage.getItem("userData");
-  const [userData, setUserData] = useState<User | null>(
-    JSON.parse(user || "null")
+  const [userData, setUserData] = useState<User | null>(getUser());
+  const [loginToggle, setLoginToggle] = useState<boolean>(
+    !userData?.access_token
   );
 
-  const [loginToggle, setLoginToggle] = useState<boolean>(false);
-
   useEffect(() => {
-    localStorage.setItem("userData", JSON.stringify(userData));
+    if (userData) setUser(userData);
   }, [userData]);
 
   const submitUserData = (user: User) => {

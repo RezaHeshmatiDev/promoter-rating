@@ -1,10 +1,13 @@
 import _axios from "axios";
+import { getUser, removeUser } from "../utils/tokenFuncs";
+import { useContext } from "react";
+import { LoginContext } from "../contexts/LoginContext";
 
 export const baseURL = "http://api.rating.hamyaransystem.com/";
 
-// const getToken = () => {
-//   return AuthService.accessToken;
-// };
+const getToken = () => {
+  return getUser()?.access_token;
+};
 
 const Axios = _axios.create({
   baseURL,
@@ -13,22 +16,24 @@ const Axios = _axios.create({
   },
 });
 
-// Axios.interceptors.request.use((config) => {
-//   const token = getToken();
-//   if (config.headers) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
-//   return config;
-// });
+Axios.interceptors.request.use((config) => {
+  const token = getToken();
+  if (config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 Axios.interceptors.response.use(
   (response) => {
     return response.data;
   },
   async (error) => {
-    // if (error.response && error.response.status === 401) {
-    //   AuthService.logout();
-    // }
+    if (error.response && error.response.status === 401) {
+      removeUser();
+      window.location.replace("/");
+      return;
+    }
 
     return Promise.reject(error.response?.data);
   }

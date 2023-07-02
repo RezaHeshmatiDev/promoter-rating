@@ -25,16 +25,6 @@ const Auth = () => {
 
   const theme = useTheme();
 
-  useEffect(() => {
-    if (location.pathname.includes("promoters-rating")) {
-      return;
-    }
-
-    if (!loginToggle) {
-      toggleLogin();
-    }
-  }, []);
-
   const handleUsernameChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
@@ -48,7 +38,7 @@ const Auth = () => {
       setLoading(true);
       apiPostLogin(username, password)
         .then((result) => {
-          submitUserData(result.data);
+          submitUserData(result);
           toggleLogin();
         })
         .finally(() => setLoading(false));
