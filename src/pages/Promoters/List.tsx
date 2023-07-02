@@ -6,6 +6,7 @@ import Table from "../Table/Table";
 import { apiGetAllPromoters } from "../../services/api/Api";
 import LoadingModal from "../../components/LoadingModal";
 import { useNavigate } from "react-router-dom";
+import { baseURL } from "../../services/Axios";
 
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
@@ -60,15 +61,15 @@ const ListItem = ({
   onClickItem?(): void;
 }) => {
   return (
-    <TableRow hover onClick={onClickItem}>
+    <TableRow hover>
       <TableCell>
         <Typography>{item.promoterID}</Typography>
       </TableCell>
-      <TableCell>
+      <TableCell onClick={onClickItem}>
         <Box display={"flex"} alignItems={"center"}>
           <Avatar
             variant={"square"}
-            src={item.promoterAvatar || ""}
+            src={`${baseURL}static/images/promoters/${item.promoterID}.png`}
             sx={{ height: "auto", width: "60px" }}
           />
           <Typography ml={1}>{item.promoterName}</Typography>

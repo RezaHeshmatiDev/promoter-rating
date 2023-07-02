@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Page from "../../components/Page/Page";
 import { apiGetPromoterDetails } from "../../services/api/Api";
@@ -17,8 +17,8 @@ import {
   TableCell,
   Typography,
   TableRow,
-  Avatar,
 } from "@mui/material";
+
 import LoadingModal from "../../components/LoadingModal";
 import Table from "../Table/Table";
 
@@ -34,12 +34,20 @@ const PromoterDetails = () => {
 
   const theme = useTheme();
 
+  const navigate = useNavigate();
+
   const getDetails = useCallback(() => {
     setLoading(true);
     apiGetPromoterDetails(promoterId)
-      .then((result: Promoter[]) => {
-        setPromoterDetails(result);
-      })
+      .then(
+        (result: {
+          promoterName: string;
+          promoterID: number;
+          data: Promoter[];
+        }) => {
+          setPromoterDetails(result.data);
+        }
+      )
       .finally(() => setLoading(false));
   }, [promoterId]);
 
@@ -87,15 +95,26 @@ const PromoterDetails = () => {
             <CardContent>
               <Table
                 tableColumns={[
-                  { text: "شناسه" },
-                  { text: "نام فروشنده" },
                   { text: "شناسه فاکتور" },
+                  { text: "تاریخ فاکتور" },
                   { text: "امتیاز" },
                   { text: "نام مشتری" },
+                  { text: "شماره تماس مشتری" },
+                  { text: "ملاحضات" },
                 ]}
               >
                 {promoterDetails.map((item, index) => {
-                  return <ListItem key={index} item={item} />;
+                  const onClickItem = () => {
+                    navigate(`/invoices/${item.invoiceID}`);
+                  };
+
+                  return (
+                    <ListItem
+                      key={index}
+                      item={item}
+                      onClickItem={onClickItem}
+                    />
+                  );
                 })}
 
                 <LoadingModal visible={loading} />
@@ -121,28 +140,21 @@ const ListItem = ({
   onClickItem?(): void;
 }) => {
   return (
-    <TableRow onClick={onClickItem}>
-      <TableCell>
-        <Typography>{item.promoterID}</Typography>
-      </TableCell>
-      <TableCell>
-        <Box display={"flex"} alignItems={"center"}>
-          <Avatar
-            variant={"square"}
-            src={item.promoterAvatar || ""}
-            sx={{ height: "auto", width: "60px" }}
-          />
-          <Typography ml={1}>{item.promoterName}</Typography>
-        </Box>
-      </TableCell>
-      <TableCell>
+    <TableRow>
+      <TableCell onClick={onClickItem}>
         <Typography>{item.invoiceID}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.invoiceDate}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.rate}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.customerName}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.customerCellPhone}</Typography>
       </TableCell>
     </TableRow>
   );

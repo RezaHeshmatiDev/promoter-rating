@@ -22,6 +22,7 @@ export interface Promoter {
   invoiceIDTotalValue: number;
   barCode: string;
   customerName: string;
+  customerCellPhone: string;
   promoterID: number;
   promoterAvatar: string;
   promoterCode: string;
@@ -36,8 +37,5 @@ export interface Promoter {
 }
 
 export interface User {
-  id: number;
-  name: string;
-  phone: string;
-  isAdmin: boolean;
+  access_token: string;
 }

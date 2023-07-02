@@ -30,7 +30,7 @@ const Sidebar = () => {
       icon: DashboardIcon,
     },
     {
-      url: "/cash-turns",
+      url: "/cashs",
       title: "صندوق ها",
       icon: CreditCardIcon,
     },

@@ -28,7 +28,7 @@ const PromotersRating = () => {
         setPromoters(result.promoters);
         setInvoiceID(result.invoiceID);
         setCustomerName(result.customerName);
-        setCashName(result.data[0].cashName);
+        setCashName(result.promoters[0].cashName);
       })
       .finally(() => setLoading(false));
   };
