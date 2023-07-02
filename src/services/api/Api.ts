@@ -39,12 +39,18 @@ export const apiGetPromoters = (id: number): Promise<any> => {
 
 /**
  *
- * @param {number} id Cash turn id
+ * @param {number} promoterId promoter id
+ * @param {number} invoiceId invoice id
  * @returns {Promise}
  */
-export const apiGetInvoices = (id: number): Promise<any> => {
+export const apiGetInvoices = (
+  promoterId: number,
+  invoiceId: number
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get(`/cashs/invoice/${id}`).then(resolve).catch(reject);
+    Axios.get(`/cashs/invoice/${invoiceId}?promoterID=${promoterId}`)
+      .then(resolve)
+      .catch(reject);
   });
 };
 

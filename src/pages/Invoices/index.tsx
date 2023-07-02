@@ -29,7 +29,7 @@ const Invoices = () => {
 
   const getInvoices = () => {
     setLoading(true);
-    apiGetInvoices(invoiceID)
+    apiGetInvoices(promoterID, invoiceID)
       .then((result: Promoter[]) => setInvoices(result))
       .finally(() => setLoading(false));
   };
