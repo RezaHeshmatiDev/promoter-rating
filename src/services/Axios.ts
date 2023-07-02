@@ -1,7 +1,5 @@
 import _axios from "axios";
 import { getUser, removeUser } from "../utils/tokenFuncs";
-import { useContext } from "react";
-import { LoginContext } from "../contexts/LoginContext";
 
 export const baseURL = "http://api.rating.hamyaransystem.com/";
 
