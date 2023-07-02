@@ -68,9 +68,8 @@ const ListItem = ({
       <TableCell onClick={onClickItem}>
         <Box display={"flex"} alignItems={"center"}>
           <Avatar
-            variant={"square"}
+            variant={"circular"}
             src={`${baseURL}static/images/promoters/${item.promoterID}.png`}
-            sx={{ height: "auto", width: "60px" }}
           />
           <Typography ml={1}>{item.promoterName}</Typography>
         </Box>

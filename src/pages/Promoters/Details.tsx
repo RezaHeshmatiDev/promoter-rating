@@ -17,10 +17,19 @@ import {
   TableCell,
   Typography,
   TableRow,
+  Avatar,
 } from "@mui/material";
 
 import LoadingModal from "../../components/LoadingModal";
 import Table from "../Table/Table";
+import { baseURL } from "../../services/Axios";
+
+interface Props {
+  promoterName: string;
+  promoterPhone: string;
+  promoterID: number;
+  data: Promoter[];
+}
 
 const PromoterDetails = () => {
   const { id }: any = useParams();
@@ -29,7 +38,7 @@ const PromoterDetails = () => {
   const { promoters }: { promoters: Promoter[] } = state;
 
   const [promoterId, setPromoterId] = useState<number>(id);
-  const [promoterDetails, setPromoterDetails] = useState<Promoter[]>([]);
+  const [promoterDetails, setPromoterDetails] = useState<Props>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const theme = useTheme();
@@ -39,15 +48,9 @@ const PromoterDetails = () => {
   const getDetails = useCallback(() => {
     setLoading(true);
     apiGetPromoterDetails(promoterId)
-      .then(
-        (result: {
-          promoterName: string;
-          promoterID: number;
-          data: Promoter[];
-        }) => {
-          setPromoterDetails(result.data);
-        }
-      )
+      .then((result: Props) => {
+        setPromoterDetails(result);
+      })
       .finally(() => setLoading(false));
   }, [promoterId]);
 
@@ -63,10 +66,25 @@ const PromoterDetails = () => {
     setLoading(!loading);
   };
 
-  const headerTitle = promoterDetails[0]?.promoterName;
+  const renderTitle = (
+    <Box display={"flex"} alignItems={"center"}>
+      <Avatar
+        variant={"circular"}
+        src={`${baseURL}static/images/promoters/${promoterDetails?.promoterID}.png`}
+      />
+      <Box ml={1}>
+        <Typography color={theme.palette.common.white}>
+          {promoterDetails?.promoterName}
+        </Typography>
+        <Typography variant={"caption"} color={theme.palette.common.white}>
+          {promoterDetails?.promoterPhone}
+        </Typography>
+      </Box>
+    </Box>
+  );
 
   return (
-    <Page title={headerTitle} hasBack={true}>
+    <Page title={renderTitle} hasBack={true}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
@@ -103,9 +121,11 @@ const PromoterDetails = () => {
                   { text: "ملاحضات" },
                 ]}
               >
-                {promoterDetails.map((item, index) => {
+                {promoterDetails?.data.map((item, index) => {
                   const onClickItem = () => {
-                    navigate(`/invoices/${item.invoiceID}`);
+                    navigate(
+                      `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
+                    );
                   };
 
                   return (

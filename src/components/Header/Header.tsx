@@ -9,7 +9,7 @@ import Sidebar from "../../layouts/Sidebar";
 import { SidebarContext } from "../../contexts/SidebarContext";
 
 export interface HeaderProps {
-  title: string;
+  title: string | ReactNode;
   hasMenu?: boolean;
   hasPrint?: boolean;
   hasBack?: boolean;

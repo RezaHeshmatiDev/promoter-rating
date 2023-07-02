@@ -42,11 +42,7 @@ const ListItem = ({ item }: { item: Promoter }) => {
       <TableRow>
         <TableCell>
           <Box display={"flex"} alignItems={"center"}>
-            <Avatar
-              variant={"square"}
-              src={item.promoterAvatar || ""}
-              sx={{ height: "auto", width: "60px" }}
-            />
+            <Avatar variant={"circular"} src={item.promoterAvatar || ""} />
             <Typography ml={1}>{item.promoterName}</Typography>
           </Box>
         </TableCell>
