@@ -14,8 +14,10 @@ const Socket = () => {
 
     socket.on(
       "invoiceData",
-      (data: { cashTurn: number; invoiceId: number }) => {
-        window.location.href = `/promoters-rating/${data.cashTurn}`;
+      (data: { cashID: number; invoiceId: number }) => {
+        const splitedURl = window.location.href.split("/")
+        if (splitedURl[splitedURl.length - 1] == data.cashID.toString())
+          window.location.href = `/promoters-rating/${data.cashID}`;
       }
     );
   };
