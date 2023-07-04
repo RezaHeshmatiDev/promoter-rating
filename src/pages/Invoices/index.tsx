@@ -45,6 +45,7 @@ const Invoices = () => {
                 { text: "نام بازاریاب" },
                 { text: "نام مشتری" },
                 { text: "شماره همراه مشتری" },
+                { text: "نام کالا" },
                 { text: "بارکد" },
               ]}
             >
@@ -94,6 +95,9 @@ const ListItem = ({
       </TableCell>
       <TableCell>
         <Typography>{item.customerCellPhone}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.name}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.barCode}</Typography>
