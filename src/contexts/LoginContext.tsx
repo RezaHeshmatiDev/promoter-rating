@@ -7,6 +7,7 @@ type LoginContext = {
   toggleLogin: () => void;
   closeLogin: () => void;
   submitUserData: (user: User) => void;
+  getUserData: () => User | null;
 };
 
 export const LoginContext = createContext<LoginContext>({} as LoginContext);
@@ -29,6 +30,10 @@ export function LoginProvider({ children }: Props) {
     setUserData(user);
   };
 
+  const getUserData = (): User | null => {
+    return userData;
+  };
+
   const toggleLogin = () => {
     setLoginToggle(!loginToggle);
   };
@@ -39,7 +44,13 @@ export function LoginProvider({ children }: Props) {
 
   return (
     <LoginContext.Provider
-      value={{ loginToggle, toggleLogin, closeLogin, submitUserData }}
+      value={{
+        loginToggle,
+        toggleLogin,
+        closeLogin,
+        submitUserData,
+        getUserData,
+      }}
     >
       {children}
     </LoginContext.Provider>

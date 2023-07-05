@@ -13,8 +13,9 @@ import {
 import { LoadingButton } from "@mui/lab";
 
 import { LoginContext } from "../../contexts/LoginContext";
-import { apiPostLogin } from "../../services/api/Api";
+import { apiGetProfile, apiPostLogin } from "../../services/api/AuthApi";
 import Snack from "../Snack/Snack";
+import { User } from "../../utils/Interfaces";
 
 const Auth = () => {
   const [username, setUsername] = useState<string>("");
@@ -38,13 +39,24 @@ const Auth = () => {
       setLoading(true);
       apiPostLogin(username, password)
         .then((result) => {
-          submitUserData(result);
-          toggleLogin();
+          getUserInfo(result.access_token);
         })
-        .finally(() => setLoading(false));
+        .catch(() => setLoading(false));
     } else {
       Snack.warn("لطفا نام کاربری و پسوورد خود را وارد کنید.");
     }
+  };
+
+  const getUserInfo = (access_token: string) => {
+    apiGetProfile(access_token)
+      .then((result: User) => {
+        submitUserData({ ...result, access_token });
+        if (result.role === "user") {
+          window.location.href = "cashs/1";
+        }
+        toggleLogin();
+      })
+      .finally(() => setLoading(false));
   };
 
   return (

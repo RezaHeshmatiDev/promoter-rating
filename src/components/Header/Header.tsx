@@ -7,6 +7,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { HeaderHeight } from "../../utils/Constants";
 import Sidebar from "../../layouts/Sidebar";
 import { SidebarContext } from "../../contexts/SidebarContext";
+import { LoginContext } from "../../contexts/LoginContext";
 
 export interface HeaderProps {
   title: string | ReactNode;
@@ -26,6 +27,7 @@ const Header = ({
   leftContent,
 }: HeaderProps) => {
   const { toggleSidebar } = useContext(SidebarContext);
+  const { getUserData } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
@@ -43,6 +45,8 @@ const Header = ({
     navigate(-1);
   };
 
+  const isAdmin = getUserData()?.role === "admin";
+
   return (
     <Grid
       container
@@ -59,7 +63,7 @@ const Header = ({
       }}
     >
       <Box flex={0.5}>
-        {true && <MenuIcon onClick={toggleSidebar} />}
+        {isAdmin && <MenuIcon onClick={toggleSidebar} />}
         {!!rightContent && rightContent}
       </Box>
       <Box flex={1} display={"flex"} justifyContent={"center"}>
@@ -70,7 +74,7 @@ const Header = ({
         {!!leftContent && leftContent}
       </Box>
 
-      <Sidebar />
+      {isAdmin && <Sidebar />}
     </Grid>
   );
 };
