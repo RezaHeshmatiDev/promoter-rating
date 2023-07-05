@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Card,
@@ -7,11 +9,10 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
 import Page from "../../components/Page/Page";
 import Table from "../Table/Table";
-import { useEffect, useState } from "react";
-import { apiGetInvoices } from "../../services/api/Api";
-import { useParams } from "react-router-dom";
+import { apiGetInvoices } from "../../services/api/CashsApi";
 import LoadingModal from "../../components/LoadingModal";
 import { Promoter } from "../../utils/Interfaces";
 

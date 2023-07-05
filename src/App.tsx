@@ -1,10 +1,10 @@
 import { Grow } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
+import { SnackbarProvider } from "notistack";
 
 import MainRouter from "./router/MainRouter";
 import ThemeProvider from "./theme/ThemeProvider";
 import createEmotionCache from "./createEmotionCache";
-import { SnackbarProvider } from "notistack";
 import SnackHOC from "./components/Snack/SnackHOC";
 import { SidebarProvider } from "./contexts/SidebarContext";
 import { LoginProvider } from "./contexts/LoginContext";

@@ -16,7 +16,7 @@ const Axios = _axios.create({
 
 Axios.interceptors.request.use((config) => {
   const token = getToken();
-  if (config.headers) {
+  if (config.headers && token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

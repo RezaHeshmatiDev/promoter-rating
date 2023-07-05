@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-
-import Page from "../../components/Page/Page";
-import { apiGetPromoterDetails } from "../../services/api/Api";
-import { Promoter } from "../../utils/Interfaces";
 import {
   Box,
   Card,
@@ -20,6 +16,9 @@ import {
   Avatar,
 } from "@mui/material";
 
+import Page from "../../components/Page/Page";
+import { apiGetPromoterDetails } from "../../services/api/PromotersApi";
+import { Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
 import Table from "../Table/Table";
 import { baseURL } from "../../services/Axios";
@@ -175,6 +174,9 @@ const ListItem = ({
       </TableCell>
       <TableCell>
         <Typography>{item.customerCellPhone}</Typography>
+      </TableCell>
+      <TableCell>
+        <Typography>{item.description}</Typography>
       </TableCell>
     </TableRow>
   );

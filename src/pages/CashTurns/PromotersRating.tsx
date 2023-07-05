@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Box, Typography, Card, CardContent, useTheme } from "@mui/material";
 import { useParams } from "react-router-dom";
 
-import { apiGetPromoters } from "../../services/api/Api";
+import { apiGetPromoters } from "../../services/api/CashsApi";
 import LoadingModal from "../../components/LoadingModal";
 import { Promoter } from "../../utils/Interfaces";
 import Page from "../../components/Page/Page";

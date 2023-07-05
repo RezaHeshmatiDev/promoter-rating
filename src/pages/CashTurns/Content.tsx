@@ -13,7 +13,7 @@ import {
 
 import { Promoter, Rate } from "../../utils/Interfaces";
 import Table from "../Table/Table";
-import { apiPatchPromoters } from "../../services/api/Api";
+import { apiPatchPromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import Snack from "../../components/Snack/Snack";
 
