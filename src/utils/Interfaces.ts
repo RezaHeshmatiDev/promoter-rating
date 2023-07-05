@@ -39,4 +39,7 @@ export interface Promoter {
 
 export interface User {
   access_token: string;
+  role: "admin" | "user";
+  sub: number;
+  username: string;
 }
