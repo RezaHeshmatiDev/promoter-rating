@@ -22,7 +22,6 @@ const MainRouter = () => {
          */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/cashs" element={<CashTurns />} />
         <Route
           path="/promoters-rating/:cashTurnId"
           element={<PromotersRating />}

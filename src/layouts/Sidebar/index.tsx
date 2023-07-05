@@ -30,11 +30,6 @@ const Sidebar = () => {
       icon: DashboardIcon,
     },
     {
-      url: "/cashs",
-      title: "صندوق ها",
-      icon: CreditCardIcon,
-    },
-    {
       url: "/promoters",
       title: "بازاریاب ها",
       icon: PeopleAltIcon,
