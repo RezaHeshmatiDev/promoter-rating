@@ -3,10 +3,10 @@ import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
 
 import { Promoter } from "../../utils/Interfaces";
 import Table from "../Table/Table";
-import { apiGetAllPromoters } from "../../services/api/Api";
 import LoadingModal from "../../components/LoadingModal";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../services/Axios";
+import { apiGetAllPromoters } from "../../services/api/PromotersApi";
 
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
