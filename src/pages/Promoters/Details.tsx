@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -14,14 +14,17 @@ import {
   Typography,
   TableRow,
   Avatar,
+  Button,
 } from "@mui/material";
+import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 
 import Page from "../../components/Page/Page";
 import { apiGetPromoterDetails } from "../../services/api/PromotersApi";
 import { Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
-import Table from "../Table/Table";
+import Table, { RequestedFilter } from "../Table/Table";
 import { baseURL } from "../../services/Axios";
+import NotesModal from "./NotesModal";
 
 interface Props {
   promoterName: string;
@@ -44,14 +47,17 @@ const PromoterDetails = () => {
 
   const navigate = useNavigate();
 
-  const getDetails = useCallback(() => {
-    setLoading(true);
-    apiGetPromoterDetails(promoterId)
-      .then((result: Props) => {
-        setPromoterDetails(result);
-      })
-      .finally(() => setLoading(false));
-  }, [promoterId]);
+  const getDetails = useCallback(
+    (filter?: RequestedFilter, sort = "") => {
+      setLoading(true);
+      apiGetPromoterDetails(promoterId, filter, sort)
+        .then((result: Props) => {
+          setPromoterDetails(result);
+        })
+        .finally(() => setLoading(false));
+    },
+    [promoterId]
+  );
 
   useEffect(() => {
     if (promoterId) getDetails();
@@ -63,6 +69,10 @@ const PromoterDetails = () => {
 
   const toggleLoadingVisibility = () => {
     setLoading(!loading);
+  };
+
+  const onChange = (filter: RequestedFilter, sort: string) => {
+    getDetails(filter, sort);
   };
 
   const renderTitle = (
@@ -119,6 +129,21 @@ const PromoterDetails = () => {
                   { text: "شماره تماس مشتری" },
                   { text: "ملاحضات" },
                 ]}
+                sorts={[
+                  { id: "customerName", text: "نام مشتری" },
+                  { id: "invoiceID", text: "شناسه فاکتور" },
+                  { id: "rate", text: "امتیاز" },
+                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                  { id: "invoiceDate", text: "تاریخ فاکتور" },
+                ]}
+                filters={[
+                  { id: "promoterID", text: "شناسه" },
+                  { id: "promoterName", text: "نام فروشنده" },
+                  { id: "inoviceID", text: "شناسه فاکتور" },
+                  { id: "customerName", text: "نام مشتری" },
+                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                ]}
+                onChange={onChange}
               >
                 {promoterDetails?.data.map((item, index) => {
                   const onClickItem = () => {
@@ -132,6 +157,7 @@ const PromoterDetails = () => {
                       key={index}
                       item={item}
                       onClickItem={onClickItem}
+                      promoterID={promoterId}
                     />
                   );
                 })}
@@ -154,30 +180,59 @@ const PromoterDetails = () => {
 const ListItem = ({
   item,
   onClickItem,
+  promoterID,
 }: {
   item: Promoter;
   onClickItem?(): void;
+  promoterID: number;
 }) => {
+  const [invoice, setInvoice] = useState<Promoter>(item);
+
+  const notesModalRef = useRef<any>(null);
+
+  const toggleNotesModal = () => {
+    notesModalRef.current.toggleModal();
+  };
+
+  const onSubmitSuccess = (notes: string) => {
+    setInvoice({ ...invoice, notes });
+  };
+
   return (
     <TableRow>
       <TableCell onClick={onClickItem}>
-        <Typography>{item.invoiceID}</Typography>
+        <Typography>{invoice.invoiceID}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.invoiceDate}</Typography>
+        <Typography>{invoice.invoiceDate}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.rate}</Typography>
+        <Typography>{invoice.rate}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.customerName}</Typography>
+        <Typography>{invoice.customerName}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.customerCellPhone}</Typography>
+        <Typography>{invoice.customerCellPhone}</Typography>
       </TableCell>
-      <TableCell>
-        <Typography>{item.description}</Typography>
+      <TableCell onClick={toggleNotesModal}>
+        {invoice.notes ? (
+          <Box display={"flex"}>
+            <Typography mr={1}>{invoice.notes}</Typography>
+            <EditTwoToneIcon />
+          </Box>
+        ) : (
+          <Button variant={"contained"}>{"ثبت ملاحضات"}</Button>
+        )}
       </TableCell>
+
+      <NotesModal
+        ref={notesModalRef}
+        invoiceID={item.invoiceID}
+        promoterID={promoterID}
+        notes={invoice.notes}
+        onSubmitSuccess={onSubmitSuccess}
+      />
     </TableRow>
   );
 };

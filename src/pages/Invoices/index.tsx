@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import Page from "../../components/Page/Page";
-import Table from "../Table/Table";
+import Table, { RequestedFilter } from "../Table/Table";
 import { apiGetInvoices } from "../../services/api/CashsApi";
 import LoadingModal from "../../components/LoadingModal";
 import { Promoter } from "../../utils/Interfaces";
@@ -28,11 +28,22 @@ const Invoices = () => {
     getInvoices();
   }, []);
 
-  const getInvoices = () => {
+  const getInvoices = (filter?: RequestedFilter, sort = "") => {
     setLoading(true);
-    apiGetInvoices(promoterID, invoiceID)
-      .then((result: Promoter[]) => setInvoices(result))
+    apiGetInvoices(promoterID, invoiceID, filter, sort)
+      .then(
+        (result: {
+          customerCellPhone: string;
+          customerName: string;
+          details: Promoter[];
+          invoiceID: number;
+        }) => setInvoices(result.details)
+      )
       .finally(() => setLoading(false));
+  };
+
+  const onChange = (filter: RequestedFilter, sort: string) => {
+    getInvoices(filter, sort);
   };
 
   return (
@@ -49,6 +60,15 @@ const Invoices = () => {
                 { text: "نام کالا" },
                 { text: "بارکد" },
               ]}
+              sorts={[
+                { id: "promoterID", text: "شناسه" },
+                { id: "promoterName", text: "نام بازاریاب" },
+                { id: "customerName", text: "نام مشتری" },
+                { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                { id: "name", text: "نام کالا" },
+                { id: "barCode", text: "بارکد" },
+              ]}
+              onChange={onChange}
             >
               {invoices.map((item) => {
                 return (

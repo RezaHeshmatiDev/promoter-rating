@@ -1,16 +1,19 @@
+import { RequestedFilter } from "../../pages/Table/Table";
 import Axios from "../Axios";
 
 /**
  *
  * @returns {Promise}
  */
-export const apiGetAllPromoters = (sort?: string): Promise<any> => {
+export const apiGetAllPromoters = (
+  filter?: RequestedFilter,
+  sort?: string
+): Promise<any> => {
   return new Promise((resolve, reject) => {
     const params = {};
 
-    if (sort) {
-      Object.assign(params, { sort });
-    }
+    if (sort) Object.assign(params, { sort });
+    if (filter) Object.assign(params, { ...filter });
 
     Axios.get(`/promoters`, { params }).then(resolve).catch(reject);
   });
@@ -20,9 +23,18 @@ export const apiGetAllPromoters = (sort?: string): Promise<any> => {
  * @param {number} id
  * @returns {Promise}
  */
-export const apiGetPromoterDetails = (id: number): Promise<any> => {
+export const apiGetPromoterDetails = (
+  id: number,
+  filter?: RequestedFilter,
+  sort?: string
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get(`/promoters/${id}`).then(resolve).catch(reject);
+    const params = {};
+
+    if (sort) Object.assign(params, { sort });
+    if (filter) Object.assign(params, { ...filter });
+
+    Axios.get(`/promoters/${id}`, { params }).then(resolve).catch(reject);
   });
 };
 
@@ -33,7 +45,7 @@ export const apiGetPromoterDetails = (id: number): Promise<any> => {
  * @param {number} invoiceId
  * @returns {Promise}
  */
-export const apiPatchPromoters = (
+export const apiRatePromoters = (
   promoterId: number,
   invoiceId: number,
   score: number
@@ -42,6 +54,30 @@ export const apiPatchPromoters = (
     const formData = new FormData();
 
     formData.append("ratingScore", score.toString());
+    formData.append("invoiceID", invoiceId.toString());
+
+    Axios.patch(`/promoters/${promoterId}/rate`, formData)
+      .then(resolve)
+      .catch(reject);
+  });
+};
+
+/**
+ *
+ * @param {number} promoterId
+ * @param {number} invoiceId
+ * @param {string} notes
+ * @returns {Promise}
+ */
+export const apiPatchPromoters = (
+  promoterId: number,
+  invoiceId: number,
+  notes: string
+): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+
+    formData.append("notes", notes);
     formData.append("invoiceID", invoiceId.toString());
 
     Axios.patch(`/promoters/${promoterId}`, formData)
