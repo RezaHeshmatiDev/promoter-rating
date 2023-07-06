@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import { Promoter } from "../../utils/Interfaces";
-import Table from "../Table/Table";
-import LoadingModal from "../../components/LoadingModal";
-import { useNavigate } from "react-router-dom";
-import { baseURL } from "../../services/Axios";
+import Table, { RequestedFilter } from "../Table/Table";
 import { apiGetAllPromoters } from "../../services/api/PromotersApi";
+import LoadingModal from "../../components/LoadingModal";
+import { baseURL } from "../../services/Axios";
+import Snack from "../../components/Snack/Snack";
 
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
@@ -18,11 +19,21 @@ const List = () => {
     getPromoters();
   }, []);
 
-  const getPromoters = async () => {
+  const getPromoters = async (filter?: RequestedFilter, sort = "") => {
     setLoading(true);
-    apiGetAllPromoters()
-      .then((result) => setPromoters(result))
+    apiGetAllPromoters(filter, sort)
+      .then((result) => {
+        if (typeof result === "object") {
+          setPromoters(result);
+        } else {
+          Snack.error("خطا در دریافت اطلاعات !");
+        }
+      })
       .finally(() => setLoading(false));
+  };
+
+  const onChange = (filter: RequestedFilter, sort: string) => {
+    getPromoters(filter, sort);
   };
 
   return (
@@ -34,6 +45,17 @@ const List = () => {
         { text: "مجموع امتیاز" },
         { text: "میانگین امتیاز" },
       ]}
+      sorts={[
+        { id: "promoterID", text: "شناسه" },
+        { id: "promoterName", text: "نام فروشنده" },
+        { id: "invoiceCount", text: "تعداد فاکتور" },
+        { id: "rateSum", text: "مجموع امتیاز" },
+      ]}
+      filters={[
+        { id: "promoterID", text: "شناسه" },
+        { id: "promoterName", text: "نام فروشنده" },
+      ]}
+      onChange={onChange}
     >
       {promoters.map((item) => {
         const onClickItem = () => {

@@ -15,7 +15,7 @@ const PromotersRating = () => {
   const [cashName, setCashName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { cashTurnId }: any = useParams();
+  const { cashTurnId, invoiceId }: any = useParams();
 
   useEffect(() => {
     getPromoters();
@@ -23,7 +23,7 @@ const PromotersRating = () => {
 
   const getPromoters = async () => {
     setLoading(true);
-    apiGetPromoters(cashTurnId)
+    apiGetPromoters(cashTurnId, invoiceId)
       .then((result) => {
         setPromoters(result.promoters);
         setInvoiceID(result.invoiceID);

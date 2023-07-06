@@ -1,13 +1,20 @@
+import { RequestedFilter } from "../../pages/Table/Table";
 import Axios from "../Axios";
 
 /**
  *
- * @param {number} id Cash turn id
+ * @param {number} cashId
+ * @param {number} invoiceId
  * @returns {Promise}
  */
-export const apiGetPromoters = (id: number): Promise<any> => {
+export const apiGetPromoters = (
+  cashId: number,
+  invoiceId: number
+): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get(`/cashs/${id}`).then(resolve).catch(reject);
+    Axios.get(`/cashs/${cashId}/invoice/${invoiceId}`)
+      .then(resolve)
+      .catch(reject);
   });
 };
 
@@ -19,10 +26,19 @@ export const apiGetPromoters = (id: number): Promise<any> => {
  */
 export const apiGetInvoices = (
   promoterId: number,
-  invoiceId: number
+  invoiceId: number,
+  filter?: RequestedFilter,
+  sort?: string
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
-    Axios.get(`/cashs/invoice/${invoiceId}?promoterID=${promoterId}`)
+    const params = {};
+
+    if (sort) Object.assign(params, { sort });
+    if (filter) Object.assign(params, { ...filter });
+
+    Axios.get(`/cashs/invoice/${invoiceId}?promoterID=${promoterId}`, {
+      params,
+    })
       .then(resolve)
       .catch(reject);
   });

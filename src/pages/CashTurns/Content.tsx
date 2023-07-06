@@ -13,7 +13,7 @@ import {
 
 import { Promoter, Rate } from "../../utils/Interfaces";
 import Table from "../Table/Table";
-import { apiPatchPromoters } from "../../services/api/PromotersApi";
+import { apiRatePromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import Snack from "../../components/Snack/Snack";
 
@@ -32,7 +32,7 @@ const ListItem = ({ item }: { item: Promoter }) => {
 
   const onSelectedRate = async (rate: Rate) => {
     setLoading(true);
-    apiPatchPromoters(item.promoterID, item.invoiceID, rate.rate)
+    apiRatePromoters(item.promoterID, item.invoiceID, rate.rate)
       .then((result) => Snack.success(result.message))
       .finally(() => setLoading(false));
   };
