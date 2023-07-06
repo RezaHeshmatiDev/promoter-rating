@@ -5,7 +5,6 @@ import {
   Routes,
 } from "react-router-dom";
 
-import CashTurns from "../pages/CashTurns";
 import PageNotFound from "../pages/404";
 import Promoters from "../pages/Promoters";
 import PromoterDetails from "../pages/Promoters/Details";
@@ -23,7 +22,7 @@ const MainRouter = () => {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route
-          path="/promoters-rating/:cashTurnId"
+          path="/promoters-rating/:cashTurnId/invoices/:invoiceId"
           element={<PromotersRating />}
         />
         <Route path="/promoters" element={<Promoters />} />
