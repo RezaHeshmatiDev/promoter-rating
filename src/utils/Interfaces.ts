@@ -35,6 +35,7 @@ export interface Promoter {
   rateSum: number;
   invoiceCount: number;
   name: string;
+  notes?: string;
 }
 
 export interface User {
