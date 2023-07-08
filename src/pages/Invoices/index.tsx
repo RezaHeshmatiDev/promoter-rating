@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 
 import Page from "../../components/Page/Page";
-import Table, { Filter, Sort } from "../Table/Table";
+import Table, { Filter, Sort } from "../../components/Table/Table";
 import { apiGetInvoices } from "../../services/api/CashsApi";
 import LoadingModal from "../../components/LoadingModal";
 import { Promoter } from "../../utils/Interfaces";

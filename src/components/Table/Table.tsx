@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState, useRef } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import {
   Table as MaterialTable,
   TableBody,
@@ -9,17 +9,13 @@ import {
   Typography,
   SxProps,
   Box,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
   SelectChangeEvent,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import SearchBox from "../../components/SearchBox";
+import NormalFilter from "./NormalFilter";
+import MultipleFilters from "./MultipleFilters";
 
 interface Props {
   tableColumns: {
@@ -56,23 +52,16 @@ const Table = ({
 }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState<Filter>();
   const [selectedSort, setSelectedSort] = useState<Sort>();
-  const searchRef = useRef<any>(null);
 
   useEffect(() => {
-    onChange?.(selectedFilter, selectedSort);
+    if (selectedFilter || selectedSort)
+      onChange?.(selectedFilter, selectedSort);
   }, [selectedSort]);
 
   useEffect(() => {
-    if (!selectedFilter?.filterValue) return;
-
-    onChange?.(selectedFilter, selectedSort);
-  }, [selectedFilter]);
-
-  let selectedFilterText = "";
-  if (filters.length > 0) {
-    selectedFilterText =
-      filters.find((item) => item.id === selectedFilter?.filterCol)?.text || "";
-  }
+    if (selectedFilter || selectedSort)
+      onChange?.(selectedFilter, selectedSort);
+  }, [selectedFilter?.filterValue]);
 
   const handleSortChange = (value: string): void => {
     setSelectedSort((previousState) => ({
@@ -83,7 +72,6 @@ const Table = ({
 
   const handleFilterChange = (e: SelectChangeEvent<string>): void => {
     const value = e.target.value;
-    searchRef.current.setValue("");
     setSelectedFilter({ filterCol: value, filterValue: "" });
   };
 
@@ -96,56 +84,40 @@ const Table = ({
 
   const align = "right";
 
+  const ableToSearchTwoValues =
+    selectedFilter?.filterCol === "rateSum" ||
+    selectedFilter?.filterCol === "invoiceCount";
+
   return (
     <>
-      <Grid container spacing={2} mb={1}>
-        {filters.length > 0 && (
-          <>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
-              <Box>
-                <FormControl fullWidth variant="outlined">
-                  <InputLabel>{"فیلتر ها"}</InputLabel>
-                  <Select
-                    value={selectedFilter?.filterCol}
-                    onChange={handleFilterChange}
-                    label={"فیلتر ها"}
-                    autoWidth
-                  >
-                    {filters.map((filter) => (
-                      <MenuItem key={filter.id} value={filter.id}>
-                        {filter.text}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={6} lg={6}>
-              <SearchBox
-                ref={searchRef}
-                onSearch={onSearch}
-                placeholder={
-                  selectedFilterText
-                    ? `جستجو بر اساس ${selectedFilterText}`
-                    : ""
-                }
-              />
-            </Grid>
-          </>
-        )}
-      </Grid>
+      {ableToSearchTwoValues ? (
+        <MultipleFilters
+          filters={filters}
+          onSearch={onSearch}
+          selectedFilter={selectedFilter}
+          handleFilterChange={handleFilterChange}
+        />
+      ) : (
+        <NormalFilter
+          filters={filters}
+          onSearch={onSearch}
+          selectedFilter={selectedFilter}
+          handleFilterChange={handleFilterChange}
+        />
+      )}
+
       <TableContainer sx={{ maxHeight: 510, ...sx }}>
         <MaterialTable stickyHeader>
           <TableHead>
             <TableRow>
-              {tableColumns.map((item, index) => {
+              {tableColumns.map((item) => {
                 const Icon = selectedSort?.asc
                   ? KeyboardArrowUpIcon
                   : KeyboardArrowDownIcon;
 
                 return (
                   <TableCell
-                    key={index}
+                    key={item.id}
                     align={item.align || align}
                     onClick={() => handleSortChange(item.id)}
                   >

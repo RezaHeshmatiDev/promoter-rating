@@ -1,23 +1,19 @@
 import { useState, useImperativeHandle, ChangeEvent, forwardRef } from "react";
 import {
-  Button,
   FormControl,
   OutlinedInput,
   InputAdornment,
   TextFieldProps,
 } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
+
 import {
   convertToEnglishDigit,
   removeWhiteSpaceFromString,
 } from "../../utils/Functions";
 
-interface Props {
-  onSearch(value: string): void;
-}
-
 const SearchBox = forwardRef(
-  ({ onSearch, placeholder, ...props }: TextFieldProps & Props, ref) => {
+  ({ placeholder, ...props }: TextFieldProps, ref) => {
     const [value, setValue] = useState<string>("");
 
     useImperativeHandle(ref, () => ({
@@ -45,17 +41,6 @@ const SearchBox = forwardRef(
       setValue(newValue);
     };
 
-    const onClickSearch = () => {
-      onSearch(value);
-    };
-
-    const onKeyDown = (e: any) => {
-      //it triggers by pressing the enter key
-      if (e.keyCode === 13) {
-        onClickSearch();
-      }
-    };
-
     return (
       <FormControl variant="outlined" fullWidth>
         <OutlinedInput
@@ -63,14 +48,6 @@ const SearchBox = forwardRef(
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          onKeyDown={onKeyDown}
-          endAdornment={
-            <InputAdornment position="end">
-              <Button variant="contained" size="small" onClick={onClickSearch}>
-                {"جستجو"}
-              </Button>
-            </InputAdornment>
-          }
           startAdornment={
             <InputAdornment position="start">
               <SearchTwoToneIcon />

@@ -3,7 +3,7 @@ import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { Promoter } from "../../utils/Interfaces";
-import Table, { Filter, Sort } from "../Table/Table";
+import Table, { Filter, Sort } from "../../components/Table/Table";
 import { apiGetAllPromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import { baseURL } from "../../services/Axios";
@@ -19,7 +19,7 @@ const List = () => {
     getPromoters();
   }, []);
 
-  const getPromoters = async (filter?: Filter, sort?: Sort) => {
+  const getPromoters = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
     apiGetAllPromoters(filter, sort)
       .then((result) => {
@@ -48,6 +48,9 @@ const List = () => {
       filters={[
         { id: "promoterID", text: "شناسه" },
         { id: "promoterName", text: "نام فروشنده" },
+        { id: "invoiceCount", text: "تعداد فاکتور" },
+        { id: "rateSum", text: "مجموع امتیاز" },
+        { id: "rateAvg", text: "میانگین امتیاز" },
       ]}
       onChange={onChange}
     >

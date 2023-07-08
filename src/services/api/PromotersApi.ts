@@ -1,4 +1,4 @@
-import { Filter, Sort } from "../../pages/Table/Table";
+import { Filter, Sort } from "../../components/Table/Table";
 import Axios from "../Axios";
 
 /**
