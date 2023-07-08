@@ -22,7 +22,7 @@ import Page from "../../components/Page/Page";
 import { apiGetPromoterDetails } from "../../services/api/PromotersApi";
 import { Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
-import Table, { RequestedFilter } from "../Table/Table";
+import Table, { Filter, Sort } from "../Table/Table";
 import { baseURL } from "../../services/Axios";
 import NotesModal from "./NotesModal";
 
@@ -48,7 +48,7 @@ const PromoterDetails = () => {
   const navigate = useNavigate();
 
   const getDetails = useCallback(
-    (filter?: RequestedFilter, sort = "") => {
+    (filter?: Filter, sort?: Sort) => {
       setLoading(true);
       apiGetPromoterDetails(promoterId, filter, sort)
         .then((result: Props) => {
@@ -71,7 +71,7 @@ const PromoterDetails = () => {
     setLoading(!loading);
   };
 
-  const onChange = (filter: RequestedFilter, sort: string) => {
+  const onChange = (filter: Filter, sort: Sort) => {
     getDetails(filter, sort);
   };
 
@@ -122,19 +122,12 @@ const PromoterDetails = () => {
             <CardContent>
               <Table
                 tableColumns={[
-                  { text: "شناسه فاکتور" },
-                  { text: "تاریخ فاکتور" },
-                  { text: "امتیاز" },
-                  { text: "نام مشتری" },
-                  { text: "شماره تماس مشتری" },
-                  { text: "ملاحضات" },
-                ]}
-                sorts={[
-                  { id: "customerName", text: "نام مشتری" },
                   { id: "invoiceID", text: "شناسه فاکتور" },
-                  { id: "rate", text: "امتیاز" },
-                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
                   { id: "invoiceDate", text: "تاریخ فاکتور" },
+                  { id: "rate", text: "امتیاز" },
+                  { id: "customerName", text: "نام مشتری" },
+                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                  { id: "notes", text: "ملاحضات" },
                 ]}
                 filters={[
                   { id: "promoterID", text: "شناسه" },
