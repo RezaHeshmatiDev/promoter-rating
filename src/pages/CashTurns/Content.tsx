@@ -19,7 +19,12 @@ import Snack from "../../components/Snack/Snack";
 
 const Content = ({ promoters }: { promoters: Promoter[] }) => {
   return (
-    <Table tableColumns={[{ text: "فروشنده" }, { text: "محل فعالیت" }]}>
+    <Table
+      tableColumns={[
+        { id: "salesPerson", text: "فروشنده" },
+        { id: "location", text: "محل فعالیت" },
+      ]}
+    >
       {promoters.map((item) => {
         return <ListItem key={item.promoterID} item={item} />;
       })}

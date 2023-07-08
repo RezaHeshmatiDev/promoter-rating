@@ -94,7 +94,7 @@ const ListItem = ({
         <Typography>{item.invoiceCount}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.rateSum}</Typography>
+        <Typography>{item.rateSum.toFixed(2)}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.rateSum / item.invoiceCount}</Typography>
