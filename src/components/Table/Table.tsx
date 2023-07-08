@@ -16,6 +16,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 import NormalFilter from "./NormalFilter";
 import MultipleFilters from "./MultipleFilters";
+import Error from "../Error/Error";
 
 interface Props {
   tableColumns: {
@@ -31,6 +32,7 @@ interface Props {
   }[];
   title?: string;
   onChange?(filter?: Filter, sort?: Sort): void;
+  error?: boolean;
 }
 
 export interface Sort {
@@ -49,6 +51,7 @@ const Table = ({
   children,
   filters = [],
   onChange,
+  error = false,
 }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState<Filter>();
   const [selectedSort, setSelectedSort] = useState<Sort>();
@@ -82,6 +85,10 @@ const Table = ({
     }));
   };
 
+  const tryAgain = () => {
+    onChange?.(selectedFilter, selectedSort);
+  };
+
   const align = "right";
 
   const ableToSearchTwoValues =
@@ -106,40 +113,44 @@ const Table = ({
         />
       )}
 
-      <TableContainer sx={{ maxHeight: 510, ...sx }}>
-        <MaterialTable stickyHeader>
-          <TableHead>
-            <TableRow>
-              {tableColumns.map((item) => {
-                const Icon = selectedSort?.asc
-                  ? KeyboardArrowUpIcon
-                  : KeyboardArrowDownIcon;
+      {error ? (
+        <Error tryAgain={tryAgain} />
+      ) : (
+        <TableContainer sx={{ maxHeight: 510, ...sx }}>
+          <MaterialTable stickyHeader>
+            <TableHead>
+              <TableRow>
+                {tableColumns.map((item) => {
+                  const Icon = selectedSort?.asc
+                    ? KeyboardArrowUpIcon
+                    : KeyboardArrowDownIcon;
 
-                return (
-                  <TableCell
-                    key={item.id}
-                    align={item.align || align}
-                    onClick={() => handleSortChange(item.id)}
-                  >
-                    <Box display={"flex"} alignItems={"center"}>
-                      <Typography fontWeight={"bold"} mr={1}>
-                        {item.text}
-                      </Typography>
-                      <Icon
-                        fontSize="medium"
-                        sx={{
-                          opacity: selectedSort?.sort === item.id ? 1 : 0,
-                        }}
-                      />
-                    </Box>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>{children}</TableBody>
-        </MaterialTable>
-      </TableContainer>
+                  return (
+                    <TableCell
+                      key={item.id}
+                      align={item.align || align}
+                      onClick={() => handleSortChange(item.id)}
+                    >
+                      <Box display={"flex"} alignItems={"center"}>
+                        <Typography fontWeight={"bold"} mr={1}>
+                          {item.text}
+                        </Typography>
+                        <Icon
+                          fontSize="medium"
+                          sx={{
+                            opacity: selectedSort?.sort === item.id ? 1 : 0,
+                          }}
+                        />
+                      </Box>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>{children}</TableBody>
+          </MaterialTable>
+        </TableContainer>
+      )}
     </>
   );
 };

@@ -42,6 +42,7 @@ const PromoterDetails = () => {
   const [promoterId, setPromoterId] = useState<number>(id);
   const [promoterDetails, setPromoterDetails] = useState<Props>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const theme = useTheme();
 
@@ -53,9 +54,22 @@ const PromoterDetails = () => {
 
   const getDetails = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
+    setHasError(false);
     apiGetPromoterDetails(promoterId, filter, sort)
-      .then((result: Props) => setPromoterDetails(result))
+      .then((result: Props) => {
+        if (typeof result === "object") {
+          setPromoterDetails(result);
+        } else {
+          handleError();
+        }
+      })
+      .catch(handleError)
       .finally(() => setLoading(false));
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    setPromoterDetails(undefined);
   };
 
   const handlePrmoterChange = (event: SelectChangeEvent<typeof promoterId>) => {
@@ -117,6 +131,7 @@ const PromoterDetails = () => {
           <Card sx={{ borderRadius: 2 }}>
             <CardContent>
               <Table
+                error={hasError}
                 tableColumns={[
                   { id: "invoiceID", text: "شناسه فاکتور" },
                   { id: "invoiceDate", text: "تاریخ فاکتور" },

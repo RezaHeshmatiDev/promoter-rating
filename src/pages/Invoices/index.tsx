@@ -21,6 +21,7 @@ const Invoices = () => {
   const [customerName, setCustomerName] = useState<string>("");
   const [customerCellPhone, setCustomerCellPhone] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const { promoterID, invoiceID }: any = useParams();
 
@@ -32,6 +33,7 @@ const Invoices = () => {
 
   const getInvoices = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
+    setHasError(false);
     apiGetInvoices(promoterID, invoiceID, filter, sort)
       .then(
         (result: {
@@ -40,12 +42,22 @@ const Invoices = () => {
           details: Promoter[];
           invoiceID: number;
         }) => {
-          setInvoices(result.details);
-          setCustomerName(result.customerName);
-          setCustomerCellPhone(result.customerCellPhone);
+          if (typeof result === "object") {
+            setInvoices(result.details);
+            setCustomerName(result.customerName);
+            setCustomerCellPhone(result.customerCellPhone);
+          } else {
+            handleError();
+          }
         }
       )
+      .catch(handleError)
       .finally(() => setLoading(false));
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    setInvoices([]);
   };
 
   const onChange = (filter: Filter, sort: Sort) => {
@@ -67,6 +79,7 @@ const Invoices = () => {
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
             <Table
+              error={hasError}
               tableColumns={[
                 { id: "promoterID", text: "شناسه" },
                 { id: "promoterName", text: "نام بازاریاب" },
