@@ -31,3 +31,23 @@ export const apiGetProfile = (access_token?: string): Promise<any> => {
       .catch(reject);
   });
 };
+
+export const apiPostSignup = (
+  username: string,
+  password: string,
+  fullname: string,
+  role: string,
+  cash: string
+) => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+
+    formData.append("userName", username);
+    formData.append("password", password);
+    formData.append("fullName", fullname);
+    formData.append("role", role);
+    formData.append("cashID", cash);
+
+    Axios.post("/auth/signup", formData).then(resolve).catch(reject);
+  });
+};

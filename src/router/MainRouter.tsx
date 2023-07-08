@@ -11,6 +11,7 @@ import PromoterDetails from "../pages/Promoters/Details";
 import Dashboard from "../pages/Dashboard";
 import PromotersRating from "../pages/CashTurns/PromotersRating";
 import Invoices from "../pages/Invoices";
+import Signup from "../components/Auth/Signup";
 
 const MainRouter = () => {
   return (
@@ -31,6 +32,8 @@ const MainRouter = () => {
           path="/promoters/:promoterID/invoices/:invoiceID"
           element={<Invoices />}
         />
+
+        <Route path="/signup" element={<Signup />} />
 
         {/**
          * Page 404 not found

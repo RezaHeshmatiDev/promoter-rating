@@ -10,7 +10,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
+import PersonIcon from "@mui/icons-material/Person";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 import { SidebarContext } from "../../contexts/SidebarContext";
@@ -33,6 +33,11 @@ const Sidebar = () => {
       url: "/promoters",
       title: "بازاریاب ها",
       icon: PeopleAltIcon,
+    },
+    {
+      url: "/signup",
+      title: "ثبت نام",
+      icon: PersonIcon,
     },
   ];
 

@@ -3,6 +3,16 @@ import Axios from "../Axios";
 
 /**
  *
+ * @returns {Promise}
+ */
+export const apiGetCashs = (): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.get(`/cashs`).then(resolve).catch(reject);
+  });
+};
+
+/**
+ *
  * @param {number} cashId
  * @param {number} invoiceId
  * @returns {Promise}
