@@ -19,15 +19,21 @@ import { CashTurn } from "../../utils/Interfaces";
 import { apiGetCashs } from "../../services/api/CashsApi";
 import LoadingModal from "../LoadingModal";
 import { apiPostSignup } from "../../services/api/AuthApi";
+import Snack from "../Snack/Snack";
 
 const Signup = () => {
   const [username, setUserName] = useState<string>("");
   const [fullname, setFullname] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [role, setRole] = useState<"user" | "admin">("user");
+  const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedCash, setSelectedCash] = useState<string>("");
   const [cashs, setCashs] = useState<CashTurn[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  const roles = [
+    { id: "user", name: "کاربر" },
+    { id: "admin", name: "ادمین" },
+  ];
 
   useEffect(() => {
     getCashs();
@@ -49,15 +55,29 @@ const Signup = () => {
   const handleFullnameChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setFullname(e.target.value);
   };
+  const handleRoleChange = (event: SelectChangeEvent<typeof selectedRole>) => {
+    setSelectedRole(event.target.value);
+  };
   const handleCashChange = (event: SelectChangeEvent<typeof selectedCash>) => {
     setSelectedCash(event.target.value);
   };
 
   const submit = () => {
     setLoading(true);
-    apiPostSignup(username, password, fullname, role, selectedCash).finally(
-      () => setLoading(false)
-    );
+    apiPostSignup(username, password, fullname, selectedRole, selectedCash)
+      .then(() => {
+        clearFields();
+        Snack.success("ثبت نام کاربر با موفقیت انجام شد.");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const clearFields = () => {
+    setUserName("");
+    setPassword("");
+    setFullname("");
+    setSelectedRole("");
+    setSelectedCash("");
   };
 
   return (
@@ -95,6 +115,24 @@ const Signup = () => {
                 sx={{ mt: 2 }}
               />
               {/** role */}
+              <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
+                <InputLabel id="select-role-id">{"انتخاب دسترسی"}</InputLabel>
+                <Select
+                  id="input-role"
+                  labelId="select-role-id"
+                  value={selectedRole}
+                  onChange={handleRoleChange}
+                  label={"انتخاب دسترسی"}
+                >
+                  {roles.map((item) => {
+                    return (
+                      <MenuItem key={item.id} value={item.id}>
+                        {item.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              </FormControl>
               {/** select cashs dropdown */}
               <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
                 <InputLabel id="select-label-id">{"انتخاب صندوق"}</InputLabel>
