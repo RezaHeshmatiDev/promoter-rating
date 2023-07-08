@@ -1,4 +1,4 @@
-import { RequestedFilter } from "../../pages/Table/Table";
+import { Filter, Sort } from "../../pages/Table/Table";
 import Axios from "../Axios";
 
 /**
@@ -6,13 +6,13 @@ import Axios from "../Axios";
  * @returns {Promise}
  */
 export const apiGetAllPromoters = (
-  filter?: RequestedFilter,
-  sort?: string
+  filter?: Filter,
+  sort?: Sort
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
     const params = {};
 
-    if (sort) Object.assign(params, { sort });
+    if (sort) Object.assign(params, { ...sort });
     if (filter) Object.assign(params, { ...filter });
 
     Axios.get(`/promoters`, { params }).then(resolve).catch(reject);
@@ -25,13 +25,13 @@ export const apiGetAllPromoters = (
  */
 export const apiGetPromoterDetails = (
   id: number,
-  filter?: RequestedFilter,
-  sort?: string
+  filter?: Filter,
+  sort?: Sort
 ): Promise<any> => {
   return new Promise((resolve, reject) => {
     const params = {};
 
-    if (sort) Object.assign(params, { sort });
+    if (sort) Object.assign(params, { ...sort });
     if (filter) Object.assign(params, { ...filter });
 
     Axios.get(`/promoters/${id}`, { params }).then(resolve).catch(reject);

@@ -3,7 +3,7 @@ import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { Promoter } from "../../utils/Interfaces";
-import Table, { RequestedFilter } from "../Table/Table";
+import Table, { Filter, Sort } from "../Table/Table";
 import { apiGetAllPromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import { baseURL } from "../../services/Axios";
@@ -19,7 +19,7 @@ const List = () => {
     getPromoters();
   }, []);
 
-  const getPromoters = async (filter?: RequestedFilter, sort = "") => {
+  const getPromoters = async (filter?: Filter, sort?: Sort) => {
     setLoading(true);
     apiGetAllPromoters(filter, sort)
       .then((result) => {
@@ -32,24 +32,18 @@ const List = () => {
       .finally(() => setLoading(false));
   };
 
-  const onChange = (filter: RequestedFilter, sort: string) => {
+  const onChange = (filter: Filter, sort: Sort) => {
     getPromoters(filter, sort);
   };
 
   return (
     <Table
       tableColumns={[
-        { text: "شناسه" },
-        { text: "نام فروشنده" },
-        { text: "تعداد فاکتور" },
-        { text: "مجموع امتیاز" },
-        { text: "میانگین امتیاز" },
-      ]}
-      sorts={[
         { id: "promoterID", text: "شناسه" },
         { id: "promoterName", text: "نام فروشنده" },
         { id: "invoiceCount", text: "تعداد فاکتور" },
         { id: "rateSum", text: "مجموع امتیاز" },
+        { id: "rateAvg", text: "میانگین امتیاز" },
       ]}
       filters={[
         { id: "promoterID", text: "شناسه" },
@@ -100,7 +94,7 @@ const ListItem = ({
         <Typography>{item.invoiceCount}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.rateSum}</Typography>
+        <Typography>{item.rateSum.toFixed(2)}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.rateSum / item.invoiceCount}</Typography>

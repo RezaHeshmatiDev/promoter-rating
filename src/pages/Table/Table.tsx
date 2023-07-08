@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useRef } from "react";
 import {
   Table as MaterialTable,
   TableBody,
@@ -16,29 +16,34 @@ import {
   Grid,
   SelectChangeEvent,
 } from "@mui/material";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
 import SearchBox from "../../components/SearchBox";
 
 interface Props {
   tableColumns: {
+    id: string;
     text: string;
     align?: "inherit" | "left" | "center" | "right" | "justify";
   }[];
   sx?: SxProps;
   children: ReactNode | ReactNode[];
-  sorts?: {
-    id: string;
-    text: string;
-  }[];
   filters?: {
     id: string;
     text: string;
   }[];
   title?: string;
-  onChange?(filter?: RequestedFilter, sort?: string): void;
+  onChange?(filter?: Filter, sort?: Sort): void;
 }
 
-export interface RequestedFilter {
-  filterCol: string;
+export interface Sort {
+  sort: string;
+  asc: boolean;
+}
+
+export interface Filter {
+  filterCol?: string;
   filterValue?: string;
 }
 
@@ -46,49 +51,47 @@ const Table = ({
   tableColumns,
   sx,
   children,
-  sorts = [],
   filters = [],
   onChange,
 }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState<string>("");
-  const [selectedSort, setSelectedSort] = useState<string>("");
+  const [selectedFilter, setSelectedFilter] = useState<Filter>();
+  const [selectedSort, setSelectedSort] = useState<Sort>();
+  const searchRef = useRef<any>(null);
 
   useEffect(() => {
-    let filter: RequestedFilter | undefined;
-    if (selectedFilter) {
-      filter = { filterCol: selectedFilter };
-    }
-    if (!!filter || !!selectedSort) {
-      onChange?.(filter, selectedSort);
-    }
+    onChange?.(selectedFilter, selectedSort);
   }, [selectedSort]);
+
+  useEffect(() => {
+    if (!selectedFilter?.filterValue) return;
+
+    onChange?.(selectedFilter, selectedSort);
+  }, [selectedFilter]);
 
   let selectedFilterText = "";
   if (filters.length > 0) {
     selectedFilterText =
-      filters.find((item) => item.id === selectedFilter)?.text || "";
+      filters.find((item) => item.id === selectedFilter?.filterCol)?.text || "";
   }
 
-  const handleSortChange = (
-    e: SelectChangeEvent<typeof selectedSort>
-  ): void => {
-    const value = e.target.value;
-    setSelectedSort(value);
+  const handleSortChange = (value: string): void => {
+    setSelectedSort((previousState) => ({
+      sort: value,
+      asc: previousState?.sort === value ? !previousState?.asc : true,
+    }));
   };
 
-  const handleFilterChange = (
-    e: SelectChangeEvent<typeof selectedFilter>
-  ): void => {
+  const handleFilterChange = (e: SelectChangeEvent<string>): void => {
     const value = e.target.value;
-    setSelectedFilter(value);
+    searchRef.current.setValue("");
+    setSelectedFilter({ filterCol: value, filterValue: "" });
   };
 
   const onSearch = (value: string) => {
-    const filter: RequestedFilter = {
-      filterCol: selectedFilter,
+    setSelectedFilter((previousFilter) => ({
+      ...previousFilter,
       filterValue: value,
-    };
-    onChange?.(filter, selectedSort);
+    }));
   };
 
   const align = "right";
@@ -96,27 +99,6 @@ const Table = ({
   return (
     <>
       <Grid container spacing={2} mb={1}>
-        {sorts.length > 0 && (
-          <Grid item xs={12}>
-            <Box>
-              <FormControl fullWidth variant="outlined">
-                <InputLabel>{"مرتب سازی"}</InputLabel>
-                <Select
-                  value={selectedSort}
-                  onChange={handleSortChange}
-                  label={"مرتب سازی"}
-                  autoWidth
-                >
-                  {sorts.map((sort) => (
-                    <MenuItem key={sort.id} value={sort.id}>
-                      {sort.text}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Box>
-          </Grid>
-        )}
         {filters.length > 0 && (
           <>
             <Grid item xs={12} sm={6} md={6} lg={6}>
@@ -124,7 +106,7 @@ const Table = ({
                 <FormControl fullWidth variant="outlined">
                   <InputLabel>{"فیلتر ها"}</InputLabel>
                   <Select
-                    value={selectedFilter}
+                    value={selectedFilter?.filterCol}
                     onChange={handleFilterChange}
                     label={"فیلتر ها"}
                     autoWidth
@@ -140,6 +122,7 @@ const Table = ({
             </Grid>
             <Grid item xs={12} sm={6} md={6} lg={6}>
               <SearchBox
+                ref={searchRef}
                 onSearch={onSearch}
                 placeholder={
                   selectedFilterText
@@ -156,9 +139,27 @@ const Table = ({
           <TableHead>
             <TableRow>
               {tableColumns.map((item, index) => {
+                const Icon = selectedSort?.asc
+                  ? KeyboardArrowUpIcon
+                  : KeyboardArrowDownIcon;
+
                 return (
-                  <TableCell key={index} align={item.align || align}>
-                    <Typography fontWeight={"bold"}>{item.text}</Typography>
+                  <TableCell
+                    key={index}
+                    align={item.align || align}
+                    onClick={() => handleSortChange(item.id)}
+                  >
+                    <Box display={"flex"} alignItems={"center"}>
+                      <Typography fontWeight={"bold"} mr={1}>
+                        {item.text}
+                      </Typography>
+                      <Icon
+                        fontSize="medium"
+                        sx={{
+                          opacity: selectedSort?.sort === item.id ? 1 : 0,
+                        }}
+                      />
+                    </Box>
                   </TableCell>
                 );
               })}

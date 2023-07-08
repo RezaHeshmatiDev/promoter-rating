@@ -11,13 +11,15 @@ import {
 } from "@mui/material";
 
 import Page from "../../components/Page/Page";
-import Table, { RequestedFilter } from "../Table/Table";
+import Table, { Filter, Sort } from "../Table/Table";
 import { apiGetInvoices } from "../../services/api/CashsApi";
 import LoadingModal from "../../components/LoadingModal";
 import { Promoter } from "../../utils/Interfaces";
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState<Promoter[]>([]);
+  const [customerName, setCustomerName] = useState<string>("");
+  const [customerCellPhone, setCustomerCellPhone] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   const { promoterID, invoiceID }: any = useParams();
@@ -28,7 +30,7 @@ const Invoices = () => {
     getInvoices();
   }, []);
 
-  const getInvoices = (filter?: RequestedFilter, sort = "") => {
+  const getInvoices = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
     apiGetInvoices(promoterID, invoiceID, filter, sort)
       .then(
@@ -37,34 +39,37 @@ const Invoices = () => {
           customerName: string;
           details: Promoter[];
           invoiceID: number;
-        }) => setInvoices(result.details)
+        }) => {
+          setInvoices(result.details);
+          setCustomerName(result.customerName);
+          setCustomerCellPhone(result.customerCellPhone);
+        }
       )
       .finally(() => setLoading(false));
   };
 
-  const onChange = (filter: RequestedFilter, sort: string) => {
+  const onChange = (filter: Filter, sort: Sort) => {
     getInvoices(filter, sort);
   };
 
+  const renderTitle = (
+    <Box>
+      <Typography color={theme.palette.common.white}>{customerName}</Typography>
+      <Typography variant={"caption"} color={theme.palette.common.white}>
+        {customerCellPhone}
+      </Typography>
+    </Box>
+  );
+
   return (
-    <Page title="اپلیکیشن">
+    <Page title={renderTitle}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
             <Table
               tableColumns={[
-                { text: "شناسه" },
-                { text: "نام بازاریاب" },
-                { text: "نام مشتری" },
-                { text: "شماره همراه مشتری" },
-                { text: "نام کالا" },
-                { text: "بارکد" },
-              ]}
-              sorts={[
                 { id: "promoterID", text: "شناسه" },
                 { id: "promoterName", text: "نام بازاریاب" },
-                { id: "customerName", text: "نام مشتری" },
-                { id: "customerCellPhone", text: "شماره تماس مشتری" },
                 { id: "name", text: "نام کالا" },
                 { id: "barCode", text: "بارکد" },
               ]}
@@ -110,12 +115,6 @@ const ListItem = ({
       </TableCell>
       <TableCell>
         <Typography>{item.promoterName}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{item.customerName}</Typography>
-      </TableCell>
-      <TableCell>
-        <Typography>{item.customerCellPhone}</Typography>
       </TableCell>
       <TableCell>
         <Typography>{item.name}</Typography>
