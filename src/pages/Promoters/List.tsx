@@ -51,7 +51,7 @@ const List = () => {
         { id: "promoterName", text: "نام فروشنده" },
         { id: "invoiceCount", text: "تعداد فاکتور" },
         { id: "rateSum", text: "مجموع امتیاز" },
-        { id: "rateAvg", text: "میانگین امتیاز" },
+        { id: "rateAvg", text: "میانگین امتیاز", unsortable: true },
       ]}
       filters={[
         { id: "promoterID", text: "شناسه" },

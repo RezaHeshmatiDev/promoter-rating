@@ -23,6 +23,7 @@ interface Props {
     id: string;
     text: string;
     align?: "inherit" | "left" | "center" | "right" | "justify";
+    unsortable?: boolean;
   }[];
   sx?: SxProps;
   children: ReactNode | ReactNode[];
@@ -129,7 +130,9 @@ const Table = ({
                     <TableCell
                       key={item.id}
                       align={item.align || align}
-                      onClick={() => handleSortChange(item.id)}
+                      onClick={() => {
+                        if (!item.unsortable) handleSortChange(item.id);
+                      }}
                     >
                       <Box display={"flex"} alignItems={"center"}>
                         <Typography fontWeight={"bold"} mr={1}>
