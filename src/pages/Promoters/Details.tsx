@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -22,7 +22,7 @@ import Page from "../../components/Page/Page";
 import { apiGetPromoterDetails } from "../../services/api/PromotersApi";
 import { Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
-import Table, { Filter, Sort } from "../Table/Table";
+import Table, { Filter, Sort } from "../../components/Table/Table";
 import { baseURL } from "../../services/Axios";
 import NotesModal from "./NotesModal";
 
@@ -42,26 +42,35 @@ const PromoterDetails = () => {
   const [promoterId, setPromoterId] = useState<number>(id);
   const [promoterDetails, setPromoterDetails] = useState<Props>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const theme = useTheme();
 
   const navigate = useNavigate();
 
-  const getDetails = useCallback(
-    (filter?: Filter, sort?: Sort) => {
-      setLoading(true);
-      apiGetPromoterDetails(promoterId, filter, sort)
-        .then((result: Props) => {
-          setPromoterDetails(result);
-        })
-        .finally(() => setLoading(false));
-    },
-    [promoterId]
-  );
-
   useEffect(() => {
     if (promoterId) getDetails();
-  }, [getDetails, promoterId]);
+  }, [promoterId]);
+
+  const getDetails = (filter?: Filter, sort?: Sort) => {
+    setLoading(true);
+    setHasError(false);
+    apiGetPromoterDetails(promoterId, filter, sort)
+      .then((result: Props) => {
+        if (typeof result === "object") {
+          setPromoterDetails(result);
+        } else {
+          handleError();
+        }
+      })
+      .catch(handleError)
+      .finally(() => setLoading(false));
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    setPromoterDetails(undefined);
+  };
 
   const handlePrmoterChange = (event: SelectChangeEvent<typeof promoterId>) => {
     setPromoterId(event.target.value as number);
@@ -72,6 +81,7 @@ const PromoterDetails = () => {
   };
 
   const onChange = (filter: Filter, sort: Sort) => {
+    console.log("onChange");
     getDetails(filter, sort);
   };
 
@@ -110,7 +120,7 @@ const PromoterDetails = () => {
               >
                 {promoters.map((item: Promoter, index: number) => {
                   return (
-                    <MenuItem key={index} value={item.promoterID}>
+                    <MenuItem key={item.promoterID} value={item.promoterID}>
                       {item.promoterName}
                     </MenuItem>
                   );
@@ -121,6 +131,7 @@ const PromoterDetails = () => {
           <Card sx={{ borderRadius: 2 }}>
             <CardContent>
               <Table
+                error={hasError}
                 tableColumns={[
                   { id: "invoiceID", text: "شناسه فاکتور" },
                   { id: "invoiceDate", text: "تاریخ فاکتور" },
@@ -138,7 +149,7 @@ const PromoterDetails = () => {
                 ]}
                 onChange={onChange}
               >
-                {promoterDetails?.data.map((item, index) => {
+                {promoterDetails?.data.map((item) => {
                   const onClickItem = () => {
                     navigate(
                       `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
@@ -147,7 +158,7 @@ const PromoterDetails = () => {
 
                   return (
                     <ListItem
-                      key={index}
+                      key={item.invoiceID}
                       item={item}
                       onClickItem={onClickItem}
                       promoterID={promoterId}

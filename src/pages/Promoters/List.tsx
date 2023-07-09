@@ -3,7 +3,7 @@ import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { Promoter } from "../../utils/Interfaces";
-import Table, { Filter, Sort } from "../Table/Table";
+import Table, { Filter, Sort } from "../../components/Table/Table";
 import { apiGetAllPromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import { baseURL } from "../../services/Axios";
@@ -12,6 +12,7 @@ import Snack from "../../components/Snack/Snack";
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -19,17 +20,24 @@ const List = () => {
     getPromoters();
   }, []);
 
-  const getPromoters = async (filter?: Filter, sort?: Sort) => {
+  const getPromoters = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
+    setHasError(false);
     apiGetAllPromoters(filter, sort)
       .then((result) => {
         if (typeof result === "object") {
           setPromoters(result);
         } else {
-          Snack.error("خطا در دریافت اطلاعات !");
+          handleError();
         }
       })
+      .catch(handleError)
       .finally(() => setLoading(false));
+  };
+
+  const handleError = () => {
+    setHasError(true);
+    setPromoters([]);
   };
 
   const onChange = (filter: Filter, sort: Sort) => {
@@ -43,13 +51,17 @@ const List = () => {
         { id: "promoterName", text: "نام فروشنده" },
         { id: "invoiceCount", text: "تعداد فاکتور" },
         { id: "rateSum", text: "مجموع امتیاز" },
-        { id: "rateAvg", text: "میانگین امتیاز" },
+        { id: "rateAvg", text: "میانگین امتیاز", unsortable: true },
       ]}
       filters={[
         { id: "promoterID", text: "شناسه" },
         { id: "promoterName", text: "نام فروشنده" },
+        { id: "invoiceCount", text: "تعداد فاکتور" },
+        { id: "rateSum", text: "مجموع امتیاز" },
+        { id: "rateAvg", text: "میانگین امتیاز" },
       ]}
       onChange={onChange}
+      error={hasError}
     >
       {promoters.map((item) => {
         const onClickItem = () => {

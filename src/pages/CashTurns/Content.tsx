@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import { Promoter, Rate } from "../../utils/Interfaces";
-import Table from "../Table/Table";
+import Table from "../../components/Table/Table";
 import { apiRatePromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import Snack from "../../components/Snack/Snack";
