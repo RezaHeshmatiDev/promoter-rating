@@ -51,7 +51,7 @@ const List = () => {
         { id: "promoterName", text: "نام فروشنده" },
         { id: "invoiceCount", text: "تعداد فاکتور" },
         { id: "rateSum", text: "مجموع امتیاز" },
-        { id: "rateAvg", text: "میانگین امتیاز", unsortable: true },
+        { id: "rateAvg", text: "میانگین امتیاز" },
       ]}
       filters={[
         { id: "promoterID", text: "شناسه" },
@@ -106,10 +106,10 @@ const ListItem = ({
         <Typography>{item.invoiceCount}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.rateSum.toFixed(2)}</Typography>
+        <Typography>{item.rateSum}</Typography>
       </TableCell>
       <TableCell>
-        <Typography>{item.rateSum / item.invoiceCount}</Typography>
+        <Typography>{item.rateAvg.toFixed(2)}</Typography>
       </TableCell>
     </TableRow>
   );

@@ -36,6 +36,7 @@ export interface Promoter {
   invoiceCount: number;
   name: string;
   notes?: string;
+  rateAvg: number;
 }
 
 export interface User {
