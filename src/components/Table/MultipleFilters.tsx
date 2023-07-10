@@ -19,7 +19,7 @@ interface Props {
     text: string;
   }[];
   selectedFilter?: Filter;
-  handleFilterChange(e: SelectChangeEvent<string>): void;
+  handleFilterChange(e?: SelectChangeEvent<string>): void;
   onSearch(value: string): void;
 }
 
@@ -39,7 +39,7 @@ const MultipleFilters = ({
   const responsive = {
     xs: 12,
     sm: 4,
-    md: 3.5,
+    md: 3,
     lg: 3.5,
   };
 
@@ -49,7 +49,11 @@ const MultipleFilters = ({
     onSearch(fromValue + ":" + toValue);
   };
 
-  const filterChanged = (e: SelectChangeEvent<string>) => {
+  const clearFilters = () => {
+    filterChanged();
+  };
+
+  const filterChanged = (e?: SelectChangeEvent<string>) => {
     fromSearchRef.current.setValue("");
     toSearchRef.current.setValue("");
     handleFilterChange(e);
@@ -83,9 +87,18 @@ const MultipleFilters = ({
         <SearchBox ref={toSearchRef} placeholder={"جستجو تا"} />
       </Grid>
 
-      <Grid item display={"flex"} alignItems={"center"}>
-        <Button variant="contained" onClick={onClickSearch}>
+      <Grid item lg={1.5} md={3} sm={4} display={"flex"} alignItems={"center"}>
+        <Button variant="contained" onClick={onClickSearch} size="small">
           {"جستجو"}
+        </Button>
+        <Button
+          color={"error"}
+          sx={{ ml: 1, paddingRight: "8px", paddingLeft: "8px" }}
+          variant="contained"
+          onClick={clearFilters}
+          size="small"
+        >
+          {"حذف فیلتر"}
         </Button>
       </Grid>
     </Grid>

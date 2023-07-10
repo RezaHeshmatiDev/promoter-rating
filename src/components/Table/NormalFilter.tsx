@@ -19,7 +19,7 @@ interface Props {
     text: string;
   }[];
   selectedFilter?: Filter;
-  handleFilterChange(e: SelectChangeEvent<string>): void;
+  handleFilterChange(e?: SelectChangeEvent<string>): void;
   onSearch(value: string): void;
 }
 
@@ -37,9 +37,9 @@ const NormalFilter = ({
 
   const responsive = {
     xs: 12,
-    sm: 5,
-    md: 5,
-    lg: 5.5,
+    sm: 4,
+    md: 4.5,
+    lg: 5,
   };
 
   let selectedFilterText = "";
@@ -53,7 +53,11 @@ const NormalFilter = ({
     onSearch(value);
   };
 
-  const filterChanged = (e: SelectChangeEvent<string>) => {
+  const clearFilters = () => {
+    filterChanged();
+  };
+
+  const filterChanged = (e?: SelectChangeEvent<string>) => {
     searchRef.current.setValue("");
     handleFilterChange(e);
   };
@@ -88,9 +92,17 @@ const NormalFilter = ({
         />
       </Grid>
 
-      <Grid item display={"flex"} alignItems={"center"}>
+      <Grid item lg={2} md={3} sm={4} display={"flex"} alignItems={"center"}>
         <Button variant="contained" onClick={onClickSearch}>
           {"جستجو"}
+        </Button>
+        <Button
+          color={"error"}
+          sx={{ ml: 1, paddingRight: "8px", paddingLeft: "8px" }}
+          variant="contained"
+          onClick={clearFilters}
+        >
+          {"حذف فیلتر"}
         </Button>
       </Grid>
     </Grid>

@@ -54,7 +54,9 @@ const Table = ({
   onChange,
   error = false,
 }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState<Filter>();
+  const [selectedFilter, setSelectedFilter] = useState<Filter | undefined>(
+    undefined
+  );
   const [selectedSort, setSelectedSort] = useState<Sort>();
 
   useEffect(() => {
@@ -74,7 +76,13 @@ const Table = ({
     }));
   };
 
-  const handleFilterChange = (e: SelectChangeEvent<string>): void => {
+  const handleFilterChange = (e?: SelectChangeEvent<string>): void => {
+    if (!e) {
+      setSelectedFilter(undefined);
+      onChange?.(undefined, selectedSort);
+      return;
+    }
+
     const value = e.target.value;
     setSelectedFilter({ filterCol: value, filterValue: "" });
   };
