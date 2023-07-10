@@ -102,7 +102,8 @@ const Table = ({
 
   const ableToSearchTwoValues =
     selectedFilter?.filterCol === "rateSum" ||
-    selectedFilter?.filterCol === "invoiceCount";
+    selectedFilter?.filterCol === "invoiceCount" ||
+    selectedFilter?.filterCol === "rateAvg";
 
   return (
     <>
