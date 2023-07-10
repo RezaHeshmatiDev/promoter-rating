@@ -118,7 +118,7 @@ const PromoterDetails = () => {
                 onChange={handlePrmoterChange}
                 label="بازاریاب ها"
               >
-                {promoters.map((item: Promoter, index: number) => {
+                {promoters.map((item: Promoter) => {
                   return (
                     <MenuItem key={item.promoterID} value={item.promoterID}>
                       {item.promoterName}
@@ -141,8 +141,6 @@ const PromoterDetails = () => {
                   { id: "notes", text: "ملاحضات" },
                 ]}
                 filters={[
-                  { id: "promoterID", text: "شناسه" },
-                  { id: "promoterName", text: "نام فروشنده" },
                   { id: "inoviceID", text: "شناسه فاکتور" },
                   { id: "customerName", text: "نام مشتری" },
                   { id: "customerCellPhone", text: "شماره تماس مشتری" },

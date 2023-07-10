@@ -8,12 +8,14 @@ import {
   Typography,
   ListItemIcon,
   ListItemText,
+  Button,
 } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 import { SidebarContext } from "../../contexts/SidebarContext";
+import { removeUser } from "../../utils/tokenFuncs";
 
 const Sidebar = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
@@ -40,6 +42,11 @@ const Sidebar = () => {
       icon: PersonIcon,
     },
   ];
+
+  const onClickLogout = () => {
+    removeUser();
+    window.location.replace("/");
+  };
 
   return (
     <Drawer
@@ -80,6 +87,15 @@ const Sidebar = () => {
               </MenuItem>
             );
           })}
+          <Box position={"absolute"} bottom={"20px"}>
+            <Button
+              onClick={onClickLogout}
+              variant={"contained"}
+              color={"error"}
+            >
+              {"خروج از حساب کاربری"}
+            </Button>
+          </Box>
         </Box>
       </Box>
     </Drawer>
