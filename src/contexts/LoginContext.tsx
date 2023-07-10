@@ -3,9 +3,6 @@ import { User } from "../utils/Interfaces";
 import { getUser, setUser } from "../utils/tokenFuncs";
 
 type LoginContext = {
-  loginToggle: boolean;
-  toggleLogin: () => void;
-  closeLogin: () => void;
   submitUserData: (user: User) => void;
   getUserData: () => User | null;
 };
@@ -18,12 +15,15 @@ type Props = {
 
 export function LoginProvider({ children }: Props) {
   const [userData, setUserData] = useState<User | null>(getUser());
-  const [loginToggle, setLoginToggle] = useState<boolean>(
-    !userData?.access_token
-  );
 
   useEffect(() => {
-    if (userData) setUser(userData);
+    if (userData) {
+      setUser(userData);
+    } else {
+      if (!window.location.href.includes("auth")) {
+        window.location.href = "/auth";
+      }
+    }
   }, [userData]);
 
   const submitUserData = (user: User) => {
@@ -34,20 +34,9 @@ export function LoginProvider({ children }: Props) {
     return userData;
   };
 
-  const toggleLogin = () => {
-    setLoginToggle(!loginToggle);
-  };
-
-  const closeLogin = () => {
-    setLoginToggle(false);
-  };
-
   return (
     <LoginContext.Provider
       value={{
-        loginToggle,
-        toggleLogin,
-        closeLogin,
         submitUserData,
         getUserData,
       }}

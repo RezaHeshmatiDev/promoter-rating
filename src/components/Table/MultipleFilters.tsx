@@ -50,7 +50,7 @@ const MultipleFilters = ({
   };
 
   const clearFilters = () => {
-    filterChanged();
+    if (selectedFilter) filterChanged();
   };
 
   const filterChanged = (e?: SelectChangeEvent<string>) => {

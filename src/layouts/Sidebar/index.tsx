@@ -16,32 +16,38 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 
 import { SidebarContext } from "../../contexts/SidebarContext";
 import { removeUser } from "../../utils/tokenFuncs";
+import { LoginContext } from "../../contexts/LoginContext";
 
 const Sidebar = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { getUserData } = useContext(LoginContext);
   const closeSidebar = () => toggleSidebar();
 
   const navigate = useNavigate();
 
   const theme = useTheme();
 
-  const SidebarList = [
-    {
-      url: "/dashboard",
-      title: "داشبورد",
-      icon: DashboardIcon,
-    },
-    {
-      url: "/promoters",
-      title: "بازاریاب ها",
-      icon: PeopleAltIcon,
-    },
-    {
-      url: "/signup",
-      title: "ثبت نام",
-      icon: PersonIcon,
-    },
-  ];
+  const isAdmin = getUserData()?.role === "admin";
+
+  const SidebarList = isAdmin
+    ? [
+        {
+          url: "/dashboard",
+          title: "داشبورد",
+          icon: DashboardIcon,
+        },
+        {
+          url: "/promoters",
+          title: "بازاریاب ها",
+          icon: PeopleAltIcon,
+        },
+        {
+          url: "/signup",
+          title: "ثبت نام",
+          icon: PersonIcon,
+        },
+      ]
+    : [];
 
   const onClickLogout = () => {
     removeUser();

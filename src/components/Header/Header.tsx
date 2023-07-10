@@ -27,7 +27,6 @@ const Header = ({
   leftContent,
 }: HeaderProps) => {
   const { toggleSidebar } = useContext(SidebarContext);
-  const { getUserData } = useContext(LoginContext);
 
   const navigate = useNavigate();
 
@@ -45,8 +44,6 @@ const Header = ({
     navigate(-1);
   };
 
-  const isAdmin = getUserData()?.role === "admin";
-
   return (
     <Grid
       container
@@ -63,7 +60,7 @@ const Header = ({
       }}
     >
       <Box flex={0.5}>
-        {isAdmin && <MenuIcon onClick={toggleSidebar} />}
+        <MenuIcon onClick={toggleSidebar} />
         {!!rightContent && rightContent}
       </Box>
       <Box flex={1} display={"flex"} justifyContent={"center"}>
@@ -74,7 +71,7 @@ const Header = ({
         {!!leftContent && leftContent}
       </Box>
 
-      {isAdmin && <Sidebar />}
+      <Sidebar />
     </Grid>
   );
 };

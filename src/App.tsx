@@ -28,7 +28,6 @@ const App = () => {
           <LoginProvider>
             <SidebarProvider>
               <SnackHOC />
-              <Auth />
               <Socket />
               <MainRouter />
             </SidebarProvider>
