@@ -1,9 +1,16 @@
-import { useState, useImperativeHandle, ChangeEvent, forwardRef } from "react";
+import {
+  useState,
+  useImperativeHandle,
+  ChangeEvent,
+  forwardRef,
+  KeyboardEventHandler,
+} from "react";
 import {
   FormControl,
   OutlinedInput,
   InputAdornment,
-  TextFieldProps,
+  OutlinedInputProps,
+  Button,
 } from "@mui/material";
 import SearchTwoToneIcon from "@mui/icons-material/SearchTwoTone";
 
@@ -12,8 +19,16 @@ import {
   removeWhiteSpaceFromString,
 } from "../../utils/Functions";
 
+interface Props {
+  hasSearch?: boolean;
+  onSearch?(value: string): void;
+}
+
 const SearchBox = forwardRef(
-  ({ placeholder, ...props }: TextFieldProps, ref) => {
+  (
+    { hasSearch, onSearch, placeholder, ...props }: Props & OutlinedInputProps,
+    ref
+  ) => {
     const [value, setValue] = useState<string>("");
 
     useImperativeHandle(ref, () => ({
@@ -41,18 +56,46 @@ const SearchBox = forwardRef(
       setValue(newValue);
     };
 
+    const onClickSearch = () => {
+      onSearch?.(value);
+    };
+
+    const onKeyDown = (e: any) => {
+      e.stopPropagation();
+
+      // It triggers by pressing the enter key
+      if (hasSearch && e.keyCode === 13) {
+        onClickSearch();
+      }
+    };
+
     return (
       <FormControl variant="outlined" fullWidth>
         <OutlinedInput
-          type="text"
+          type={"text"}
           placeholder={placeholder}
           value={value}
           onChange={onChange}
+          onKeyDown={onKeyDown}
+          endAdornment={
+            hasSearch ? (
+              <InputAdornment position="end">
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={onClickSearch}
+                >
+                  {"جستجو"}
+                </Button>
+              </InputAdornment>
+            ) : null
+          }
           startAdornment={
             <InputAdornment position="start">
               <SearchTwoToneIcon />
             </InputAdornment>
           }
+          {...props}
         />
       </FormControl>
     );

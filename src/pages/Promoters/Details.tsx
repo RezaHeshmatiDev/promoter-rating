@@ -25,6 +25,8 @@ import LoadingModal from "../../components/LoadingModal";
 import Table, { Filter, Sort } from "../../components/Table/Table";
 import { baseURL } from "../../services/Axios";
 import NotesModal from "./NotesModal";
+import SearchBox from "../../components/SearchBox";
+import PromotersDropDown from "./PromotersDropDown";
 
 interface Props {
   promoterName: string;
@@ -107,26 +109,10 @@ const PromoterDetails = () => {
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel id="select-promoter-label">
-                {"بازاریاب ها"}
-              </InputLabel>
-              <Select
-                id="select-promoter"
-                labelId="select-promoter-label"
-                value={promoterId}
-                onChange={handlePrmoterChange}
-                label="بازاریاب ها"
-              >
-                {promoters.map((item: Promoter) => {
-                  return (
-                    <MenuItem key={item.promoterID} value={item.promoterID}>
-                      {item.promoterName}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </FormControl>
+            <PromotersDropDown
+              promoterId={promoterId}
+              handlePrmoterChange={handlePrmoterChange}
+            />
           </CardContent>
           <Card sx={{ borderRadius: 2 }}>
             <CardContent>

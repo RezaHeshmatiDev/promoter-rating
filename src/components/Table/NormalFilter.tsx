@@ -72,7 +72,6 @@ const NormalFilter = ({
               value={selectedFilter?.filterCol || ""}
               onChange={filterChanged}
               label={"فیلتر ها"}
-              autoWidth
             >
               {filters.map((filter) => (
                 <MenuItem key={filter.id} value={filter.id}>
