@@ -5,12 +5,21 @@ const PageNotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <Container sx={{ width: "100%", height: "100%", display: "flex", justifyContent: "center" }}>
-      <Box >
-        <Typography>{"404"}</Typography>
-        <Typography>{"چنین صفحه ای وجود ندارد"}</Typography>
+    <Container sx={{ height: "100%" }}>
+      <Box
+        height={"100%"}
+        display={"flex"}
+        flexDirection={"column"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
+        <Typography variant={"h2"}>{"404"}</Typography>
+        <Typography variant={"h6"} fontWeight={"600"}>
+          {"چنین صفحه ای وجود ندارد"}
+        </Typography>
         <Button
           variant={"contained"}
+          sx={{ mt: 2 }}
           onClick={() => navigate("/", { replace: true })}
         >
           <Typography>{"بازگشت به صفحه اصلی"}</Typography>
