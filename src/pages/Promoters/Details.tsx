@@ -1,14 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
   Card,
   CardContent,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   useTheme,
   TableCell,
   Typography,
@@ -20,12 +15,11 @@ import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 
 import Page from "../../components/Page/Page";
 import { apiGetPromoterDetails } from "../../services/api/PromotersApi";
-import { Promoter } from "../../utils/Interfaces";
+import { AutocompleteOption, Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
 import Table, { Filter, Sort } from "../../components/Table/Table";
 import { baseURL } from "../../services/Axios";
 import NotesModal from "./NotesModal";
-import SearchBox from "../../components/SearchBox";
 import PromotersDropDown from "./PromotersDropDown";
 
 interface Props {
@@ -37,12 +31,12 @@ interface Props {
 
 const PromoterDetails = () => {
   const { id }: any = useParams();
-  const { state } = useLocation();
 
-  const { promoters }: { promoters: Promoter[] } = state;
-
-  const [promoterId, setPromoterId] = useState<number>(id);
   const [promoterDetails, setPromoterDetails] = useState<Props>();
+  const [selectedPromoter, setSelectedPromoter] = useState<AutocompleteOption>({
+    id,
+    label: "",
+  });
   const [loading, setLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
 
@@ -51,15 +45,19 @@ const PromoterDetails = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (promoterId) getDetails();
-  }, [promoterId]);
+    getDetails(id);
+  }, []);
 
-  const getDetails = (filter?: Filter, sort?: Sort) => {
+  const getDetails = (promoterId: number, filter?: Filter, sort?: Sort) => {
     setLoading(true);
     setHasError(false);
     apiGetPromoterDetails(promoterId, filter, sort)
       .then((result: Props) => {
         if (typeof result === "object") {
+          setSelectedPromoter({
+            id: result.promoterID,
+            label: result.promoterName,
+          });
           setPromoterDetails(result);
         } else {
           handleError();
@@ -74,17 +72,13 @@ const PromoterDetails = () => {
     setPromoterDetails(undefined);
   };
 
-  const handlePrmoterChange = (event: SelectChangeEvent<typeof promoterId>) => {
-    setPromoterId(event.target.value as number);
-  };
-
-  const toggleLoadingVisibility = () => {
-    setLoading(!loading);
-  };
-
   const onChange = (filter: Filter, sort: Sort) => {
-    console.log("onChange");
-    getDetails(filter, sort);
+    getDetails(selectedPromoter.id, filter, sort);
+  };
+
+  const handlePromoterChanged = (promoter: AutocompleteOption) => {
+    getDetails(promoter.id);
+    setSelectedPromoter(promoter);
   };
 
   const renderTitle = (
@@ -110,57 +104,52 @@ const PromoterDetails = () => {
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
             <PromotersDropDown
-              promoterId={promoterId}
-              handlePrmoterChange={handlePrmoterChange}
+              selectedPromoter={selectedPromoter}
+              handlePromoterChanged={handlePromoterChanged}
             />
           </CardContent>
-          <Card sx={{ borderRadius: 2 }}>
-            <CardContent>
-              <Table
-                error={hasError}
-                tableColumns={[
-                  { id: "invoiceID", text: "شناسه فاکتور" },
-                  { id: "invoiceDate", text: "تاریخ فاکتور" },
-                  { id: "rate", text: "امتیاز" },
-                  { id: "customerName", text: "نام مشتری" },
-                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
-                  { id: "notes", text: "ملاحضات" },
-                ]}
-                filters={[
-                  { id: "inoviceID", text: "شناسه فاکتور" },
-                  { id: "customerName", text: "نام مشتری" },
-                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
-                ]}
-                onChange={onChange}
-              >
-                {promoterDetails?.data.map((item) => {
-                  const onClickItem = () => {
-                    navigate(
-                      `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
-                    );
-                  };
-
-                  return (
-                    <ListItem
-                      key={item.invoiceID}
-                      item={item}
-                      onClickItem={onClickItem}
-                      promoterID={promoterId}
-                    />
+          <CardContent>
+            <Table
+              error={hasError}
+              tableColumns={[
+                { id: "invoiceId", text: "شناسه فاکتور" },
+                { id: "invoiceDate", text: "تاریخ فاکتور" },
+                { id: "rate", text: "امتیاز" },
+                { id: "customerName", text: "نام مشتری" },
+                { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                { id: "notes", text: "ملاحضات" },
+              ]}
+              filters={[
+                { id: "inoviceId", text: "شناسه فاکتور" },
+                { id: "customerName", text: "نام مشتری" },
+                { id: "customerCellPhone", text: "شماره تماس مشتری" },
+              ]}
+              onChange={onChange}
+            >
+              {promoterDetails?.data.map((item) => {
+                const onClickItem = () => {
+                  navigate(
+                    `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
                   );
-                })}
+                };
 
-                <LoadingModal visible={loading} />
-              </Table>
-            </CardContent>
-          </Card>
+                return (
+                  <ListItem
+                    key={item.invoiceID}
+                    item={item}
+                    onClickItem={onClickItem}
+                    promoterID={promoterDetails.promoterID}
+                  />
+                );
+              })}
+
+              <LoadingModal visible={loading} />
+            </Table>
+          </CardContent>
         </Card>
       </Box>
 
-      <LoadingModal
-        visible={loading}
-        toggleVisibility={toggleLoadingVisibility}
-      />
+      <LoadingModal visible={loading} />
     </Page>
   );
 };

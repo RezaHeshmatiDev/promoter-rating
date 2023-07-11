@@ -45,3 +45,8 @@ export interface User {
   sub: number;
   username: string;
 }
+
+export interface AutocompleteOption {
+  id: number;
+  label: string;
+}
