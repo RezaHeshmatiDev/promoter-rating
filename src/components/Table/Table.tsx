@@ -64,11 +64,6 @@ const Table = ({
       onChange?.(selectedFilter, selectedSort);
   }, [selectedSort]);
 
-  useEffect(() => {
-    if (selectedFilter || selectedSort)
-      onChange?.(selectedFilter, selectedSort);
-  }, [selectedFilter?.filterValue]);
-
   const handleSortChange = (value: string): void => {
     setSelectedSort((previousState) => ({
       sort: value,
@@ -83,6 +78,14 @@ const Table = ({
       return;
     }
 
+    // Reset filter
+    if (
+      selectedFilter?.filterValue &&
+      selectedFilter?.filterValue?.length > 0
+    ) {
+      onChange?.(undefined, selectedSort);
+    }
+
     const value = e.target.value;
     setSelectedFilter({ filterCol: value, filterValue: "" });
   };
@@ -92,6 +95,7 @@ const Table = ({
       ...previousFilter,
       filterValue: value,
     }));
+    onChange?.({ ...selectedFilter, filterValue: value }, selectedSort);
   };
 
   const tryAgain = () => {
