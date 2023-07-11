@@ -42,10 +42,19 @@ const Sidebar = () => {
           icon: PeopleAltIcon,
         },
         {
+          url: "/users",
+          title: "مدیریت کاربران",
+          icon: PersonIcon,
+        },
+        {
           url: "/signup",
           title: "ثبت نام",
           icon: PersonIcon,
         },
+        // submenu: [
+        //   { url: "/users", title: "کاربران", icon: PersonIcon },
+        //   { url: "/signup", title: "ثبت نام", icon: PersonIcon },
+        // ],
       ]
     : [];
 
@@ -76,8 +85,10 @@ const Sidebar = () => {
             const Icon = item.icon;
 
             const onClickItem = () => {
-              closeSidebar();
-              navigate(item.url);
+              if (item.url) {
+                closeSidebar();
+                navigate(item.url);
+              }
             };
 
             return (

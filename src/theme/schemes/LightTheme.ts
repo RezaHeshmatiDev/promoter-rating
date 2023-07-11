@@ -155,7 +155,7 @@ export const LightTheme = createTheme({
       styleOverrides: {
         root: {
           color: themeColors.black,
-          textAlign: "left",
+          textAlign: "center",
           borderBottom: 0,
         },
       },

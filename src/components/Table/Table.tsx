@@ -102,7 +102,7 @@ const Table = ({
     onChange?.(selectedFilter, selectedSort);
   };
 
-  const align = "right";
+  const align = "center";
 
   const ableToSearchTwoValues =
     selectedFilter?.filterCol === "rateSum" ||
@@ -142,21 +142,19 @@ const Table = ({
                   return (
                     <TableCell
                       key={item.id}
-                      align={item.align || align}
                       onClick={() => {
                         if (!item.unsortable) handleSortChange(item.id);
                       }}
                     >
-                      <Box display={"flex"} alignItems={"center"}>
-                        <Typography fontWeight={"bold"} mr={1}>
-                          {item.text}
-                        </Typography>
-                        <Icon
-                          fontSize="medium"
-                          sx={{
-                            opacity: selectedSort?.sort === item.id ? 1 : 0,
-                          }}
-                        />
+                      <Box
+                        display={"flex"}
+                        alignItems={"center"}
+                        justifyContent={item.align || align}
+                      >
+                        <Typography fontWeight={"bold"}>{item.text}</Typography>
+                        {selectedSort?.sort === item.id && (
+                          <Icon sx={{ ml: 1 }} fontSize="medium" />
+                        )}
                       </Box>
                     </TableCell>
                   );

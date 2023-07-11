@@ -15,6 +15,7 @@ import Invoices from "../pages/Invoices";
 import Signup from "../components/Auth/Signup";
 import { LoginContext } from "../contexts/LoginContext";
 import Auth from "../components/Auth/Auth";
+import Users from "../pages/Users";
 
 const MainRouter = () => {
   const { getUserData } = useContext(LoginContext);
@@ -26,9 +27,7 @@ const MainRouter = () => {
       <Routes>
         {isAdmin ? (
           <>
-            {/**
-             * CashTurns
-             */}
+            {/** Admin routes */}
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/dashboard" element={<Dashboard />} />
 
@@ -40,9 +39,11 @@ const MainRouter = () => {
             />
 
             <Route path="/signup" element={<Signup />} />
+            <Route path="/users" element={<Users />} />
           </>
         ) : (
           <>
+            {/** User routes */}
             <Route
               path="/"
               element={
