@@ -29,8 +29,18 @@ const Sidebar = () => {
 
   const isAdmin = getUserData()?.role === "admin";
 
-  const SidebarList = isAdmin
-    ? [
+  let SidebarList = [
+    {
+      url: "/profile",
+      title: "پروفایل کاربری",
+      icon: PersonIcon,
+    },
+  ];
+
+  if (isAdmin) {
+    SidebarList = [
+      ...SidebarList,
+      ...[
         {
           url: "/dashboard",
           title: "داشبورد",
@@ -51,12 +61,9 @@ const Sidebar = () => {
           title: "ثبت نام",
           icon: PersonIcon,
         },
-        // submenu: [
-        //   { url: "/users", title: "کاربران", icon: PersonIcon },
-        //   { url: "/signup", title: "ثبت نام", icon: PersonIcon },
-        // ],
-      ]
-    : [];
+      ],
+    ];
+  }
 
   const onClickLogout = () => {
     removeUser();
@@ -78,9 +85,31 @@ const Sidebar = () => {
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Typography my={4} variant="h4">
-            {"اپلیکیشن"}
-          </Typography>
+          <Box
+            my={4}
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+          >
+            <Typography textAlign={"center"}>
+              {`نام کاربر: `}
+              <Typography fontWeight={"bold"} display={"inline-block"}>
+                {getUserData()?.fullName}
+              </Typography>
+            </Typography>
+            {!isAdmin && (
+              <Typography>
+                {`صندوق: `}
+                <Typography
+                  variant="h6"
+                  fontWeight={"bold"}
+                  display={"inline-block"}
+                >
+                  {getUserData()?.cash?.name}
+                </Typography>
+              </Typography>
+            )}
+          </Box>
           {SidebarList.map((item) => {
             const Icon = item.icon;
 
