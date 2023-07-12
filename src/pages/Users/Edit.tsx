@@ -13,6 +13,7 @@ import {
   SelectChangeEvent,
   MenuItem,
 } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { CashTurn, User } from "../../utils/Interfaces";
 import { apiGetCashs } from "../../services/api/CashsApi";
@@ -20,7 +21,6 @@ import { apiDeleteUser, apiPatchUser } from "../../services/api/AuthApi";
 import LoadingModal from "../../components/LoadingModal";
 import Page from "../../components/Page/Page";
 import Snack from "../../components/Snack/Snack";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const EditUser = () => {
   const { state } = useLocation();

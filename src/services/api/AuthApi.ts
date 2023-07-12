@@ -32,6 +32,17 @@ export const apiGetProfile = (access_token?: string): Promise<any> => {
   });
 };
 
+/**
+ *
+ * @param {number} id
+ * @returns {Promise}
+ */
+export const apiGetUserInfo = (id: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.get(`/user/${id}`).then(resolve).catch(reject);
+  });
+};
+
 export const apiPostSignup = (
   username: string,
   password: string,
@@ -69,7 +80,7 @@ export const apiPatchUser = (
     formData.append("role", role);
     formData.append("cashID", cash);
 
-    Axios.post(`/user/${userId}`, formData).then(resolve).catch(reject);
+    Axios.patch(`/user/${userId}`, formData).then(resolve).catch(reject);
   });
 };
 
