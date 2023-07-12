@@ -90,6 +90,7 @@ const EditUser = () => {
       .then(() => {
         clearFields();
         Snack.success("ویرایش اطلاعات کاربر با موفقیت انجام شد.");
+        navigate(-1);
       })
       .finally(() => setLoading(false));
   };
