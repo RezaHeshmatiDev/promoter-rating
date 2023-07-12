@@ -1,5 +1,5 @@
-import { OptionsObject, SnackbarKey, SnackbarMessage } from "notistack";
 import { Component } from "react";
+import { OptionsObject, SnackbarKey, SnackbarMessage } from "notistack";
 
 interface Props {
   enqueueSnackbar(

@@ -44,10 +44,6 @@ const PromoterDetails = () => {
 
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   getDetails(id);
-  // }, []);
-
   const getDetails = (promoterId: number, filter?: Filter, sort?: Sort) => {
     setLoading(true);
     setHasError(false);
@@ -112,7 +108,7 @@ const PromoterDetails = () => {
             <Table
               error={hasError}
               tableColumns={[
-                { id: "invoiceId", text: "شناسه فاکتور" },
+                { id: "invoiceID", text: "شناسه فاکتور" },
                 { id: "invoiceDate", text: "تاریخ فاکتور" },
                 { id: "rate", text: "امتیاز" },
                 { id: "customerName", text: "نام مشتری" },
@@ -120,7 +116,7 @@ const PromoterDetails = () => {
                 { id: "notes", text: "ملاحظات" },
               ]}
               filters={[
-                { id: "inoviceId", text: "شناسه فاکتور" },
+                { id: "invoiceID", text: "شناسه فاکتور" },
                 { id: "customerName", text: "نام مشتری" },
                 { id: "customerCellPhone", text: "شماره تماس مشتری" },
               ]}

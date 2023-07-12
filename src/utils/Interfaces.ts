@@ -44,6 +44,11 @@ export interface LocalUser {
   role: "admin" | "user";
   sub: number;
   username: string;
+  fullName: string;
+  cash: {
+    id: number;
+    name: string;
+  };
 }
 
 export interface User {
