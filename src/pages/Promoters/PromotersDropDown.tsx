@@ -49,6 +49,7 @@ const PromotersDropDown = ({
           onChange={onChange}
           options={promoters}
           value={selectedPromoter}
+          isOptionEqualToValue={(option, value) => value.id == option.id}
           renderInput={(params) => (
             <TextField {...params} label="بازاریاب ها" />
           )}

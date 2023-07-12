@@ -44,9 +44,9 @@ const PromoterDetails = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    getDetails(id);
-  }, []);
+  // useEffect(() => {
+  //   getDetails(id);
+  // }, []);
 
   const getDetails = (promoterId: number, filter?: Filter, sort?: Sort) => {
     setLoading(true);
@@ -117,7 +117,7 @@ const PromoterDetails = () => {
                 { id: "rate", text: "امتیاز" },
                 { id: "customerName", text: "نام مشتری" },
                 { id: "customerCellPhone", text: "شماره تماس مشتری" },
-                { id: "notes", text: "ملاحضات" },
+                { id: "notes", text: "ملاحظات" },
               ]}
               filters={[
                 { id: "inoviceId", text: "شناسه فاکتور" },
@@ -194,12 +194,12 @@ const ListItem = ({
       </TableCell>
       <TableCell onClick={toggleNotesModal}>
         {invoice.notes ? (
-          <Box display={"flex"}>
+          <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
             <Typography mr={1}>{invoice.notes}</Typography>
             <EditTwoToneIcon />
           </Box>
         ) : (
-          <Button variant={"contained"}>{"ثبت ملاحضات"}</Button>
+          <Button variant={"contained"}>{"ثبت ملاحظات"}</Button>
         )}
       </TableCell>
 

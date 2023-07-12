@@ -61,13 +61,13 @@ const NotesModal = forwardRef(
           }}
         >
           <CardHeader
-            title={"ثبت ملاحضات"}
+            title={"ثبت ملاحظات"}
             action={<CloseIcon onClick={toggleModal} />}
           />
           <CardContent>
             <OutlinedInput
               type="text"
-              placeholder={"ملاحضات"}
+              placeholder={"ملاحظات"}
               value={note}
               onChange={onChangeNote}
               multiline

@@ -8,8 +8,8 @@ import createEmotionCache from "./createEmotionCache";
 import SnackHOC from "./components/Snack/SnackHOC";
 import { SidebarProvider } from "./contexts/SidebarContext";
 import { LoginProvider } from "./contexts/LoginContext";
-import Auth from "./components/Auth/Auth";
 import Socket from "./services/socket";
+import { FilterProvider } from "./contexts/FilterContext";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -27,9 +27,11 @@ const App = () => {
         >
           <LoginProvider>
             <SidebarProvider>
-              <SnackHOC />
-              <Socket />
-              <MainRouter />
+              <FilterProvider>
+                <SnackHOC />
+                <Socket />
+                <MainRouter />
+              </FilterProvider>
             </SidebarProvider>
           </LoginProvider>
         </SnackbarProvider>

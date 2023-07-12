@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { TableRow, TableCell, Typography, Box, Avatar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -7,7 +7,6 @@ import Table, { Filter, Sort } from "../../components/Table/Table";
 import { apiGetAllPromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import { baseURL } from "../../services/Axios";
-import Snack from "../../components/Snack/Snack";
 
 const List = () => {
   const [promoters, setPromoters] = useState<Promoter[]>([]);
@@ -15,10 +14,6 @@ const List = () => {
   const [hasError, setHasError] = useState<boolean>(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getPromoters();
-  }, []);
 
   const getPromoters = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
@@ -94,7 +89,7 @@ const ListItem = ({
         <Typography>{item.promoterID}</Typography>
       </TableCell>
       <TableCell onClick={onClickItem}>
-        <Box display={"flex"} alignItems={"center"}>
+        <Box display={"flex"} alignItems={"center"} justifyContent={"center"}>
           <Avatar
             variant={"circular"}
             src={`${baseURL}static/images/promoters/${item.promoterID}.png`}

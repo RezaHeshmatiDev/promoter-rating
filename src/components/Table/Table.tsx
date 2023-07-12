@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useContext } from "react";
 import {
   Table as MaterialTable,
   TableBody,
@@ -14,9 +14,10 @@ import {
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-import NormalFilter from "./NormalFilter";
 import MultipleFilters from "./MultipleFilters";
+import NormalFilter from "./NormalFilter";
 import Error from "../Error/Error";
+import { FilterContext } from "../../contexts/FilterContext";
 
 interface Props {
   tableColumns: {
@@ -54,14 +55,16 @@ const Table = ({
   onChange,
   error = false,
 }: Props) => {
+  const { getFilter, clearFilters, selectedFilterChanged } =
+    useContext(FilterContext);
+
   const [selectedFilter, setSelectedFilter] = useState<Filter | undefined>(
-    undefined
+    getFilter()
   );
   const [selectedSort, setSelectedSort] = useState<Sort>();
 
   useEffect(() => {
-    if (selectedFilter || selectedSort)
-      onChange?.(selectedFilter, selectedSort);
+    onChange?.(selectedFilter, selectedSort);
   }, [selectedSort]);
 
   const handleSortChange = (value: string): void => {
@@ -75,6 +78,7 @@ const Table = ({
     if (!e) {
       setSelectedFilter(undefined);
       onChange?.(undefined, selectedSort);
+      clearFilters();
       return;
     }
 
@@ -84,10 +88,13 @@ const Table = ({
       selectedFilter?.filterValue?.length > 0
     ) {
       onChange?.(undefined, selectedSort);
+      clearFilters();
     }
 
     const value = e.target.value;
-    setSelectedFilter({ filterCol: value, filterValue: "" });
+    const filter = { filterCol: value, filterValue: "" };
+    setSelectedFilter(filter);
+    selectedFilterChanged(filter);
   };
 
   const onSearch = (value: string) => {
@@ -95,6 +102,7 @@ const Table = ({
       ...previousFilter,
       filterValue: value,
     }));
+    selectedFilterChanged({ ...selectedFilter, filterValue: value });
     onChange?.({ ...selectedFilter, filterValue: value }, selectedSort);
   };
 

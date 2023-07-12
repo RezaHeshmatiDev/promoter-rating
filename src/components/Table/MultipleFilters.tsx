@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -31,6 +31,14 @@ const MultipleFilters = ({
 }: Props) => {
   const fromSearchRef = useRef<any>(null);
   const toSearchRef = useRef<any>(null);
+
+  useEffect(() => {
+    const searchValue = selectedFilter?.filterValue?.split(":");
+    if (searchValue) {
+      fromSearchRef.current.setValue(searchValue[0]);
+      toSearchRef.current.setValue(searchValue[1]);
+    }
+  }, []);
 
   if (!filters || filters.length === 0) {
     return null;

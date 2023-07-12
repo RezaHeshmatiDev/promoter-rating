@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import {
   Grid,
   Box,
@@ -30,6 +30,12 @@ const NormalFilter = ({
   onSearch,
 }: Props) => {
   const searchRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (selectedFilter?.filterValue) {
+      searchRef.current?.setValue(selectedFilter?.filterValue);
+    }
+  }, []);
 
   if (!filters || filters.length === 0) {
     return null;

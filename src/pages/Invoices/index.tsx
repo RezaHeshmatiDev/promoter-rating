@@ -27,10 +27,6 @@ const Invoices = () => {
 
   const theme = useTheme();
 
-  useEffect(() => {
-    getInvoices();
-  }, []);
-
   const getInvoices = (filter?: Filter, sort?: Sort) => {
     setLoading(true);
     setHasError(false);
