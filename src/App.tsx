@@ -1,4 +1,4 @@
-import { Grow } from "@mui/material";
+import { Grow, CssBaseline } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
 import { SnackbarProvider } from "notistack";
 
@@ -10,6 +10,7 @@ import { SidebarProvider } from "./contexts/SidebarContext";
 import { LoginProvider } from "./contexts/LoginContext";
 import Socket from "./services/socket";
 import { FilterProvider } from "./contexts/FilterContext";
+import DialogAlert from "./components/DialogAlert";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -28,8 +29,10 @@ const App = () => {
           <LoginProvider>
             <SidebarProvider>
               <FilterProvider>
+                <CssBaseline />
                 <SnackHOC />
                 <Socket />
+                <DialogAlert />
                 <MainRouter />
               </FilterProvider>
             </SidebarProvider>

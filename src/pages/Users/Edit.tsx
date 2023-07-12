@@ -21,6 +21,7 @@ import { apiDeleteUser, apiPatchUser } from "../../services/api/AuthApi";
 import LoadingModal from "../../components/LoadingModal";
 import Page from "../../components/Page/Page";
 import Snack from "../../components/Snack/Snack";
+import DialogAlert from "../../components/DialogAlert";
 
 const EditUser = () => {
   const { state } = useLocation();
@@ -95,6 +96,17 @@ const EditUser = () => {
       .finally(() => setLoading(false));
   };
 
+  const openDialog = () => {
+    DialogAlert.showDialog({
+      title: "حذف کاربر",
+      message: `آیا از حذف کاربر به نام ${user.fullName} اطمینان دارید؟`,
+      confirmBtn: "بلی",
+      cancelBtn: "خیر",
+      onClickConfirm: removeUser,
+      color: "error",
+    });
+  };
+
   const removeUser = () => {
     setLoading(true);
     apiDeleteUser(user.ID)
@@ -102,6 +114,7 @@ const EditUser = () => {
         Snack.success("کاربر مورد نظر با موفقیت حذف شد.");
         navigate(-1);
       })
+      .catch(() => Snack.error("عملیات با خطا مواجه شد."))
       .finally(() => setLoading(false));
   };
 
@@ -202,7 +215,7 @@ const EditUser = () => {
             <Button onClick={submit} variant={"contained"}>
               {"ویرایش"}
             </Button>
-            <Button onClick={removeUser} color={"error"} variant={"contained"}>
+            <Button onClick={openDialog} color={"error"} variant={"contained"}>
               {"حذف"}
             </Button>
           </CardActions>
