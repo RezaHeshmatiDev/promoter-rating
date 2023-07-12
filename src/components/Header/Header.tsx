@@ -7,7 +7,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { HeaderHeight } from "../../utils/Constants";
 import Sidebar from "../../layouts/Sidebar";
 import { SidebarContext } from "../../contexts/SidebarContext";
-import { LoginContext } from "../../contexts/LoginContext";
 
 export interface HeaderProps {
   title: string | ReactNode;

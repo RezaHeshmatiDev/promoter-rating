@@ -1,4 +1,4 @@
-import { useState, ReactNode, createContext, useEffect } from "react";
+import { useState, ReactNode, createContext } from "react";
 import { Filter } from "../components/Table/Table";
 
 interface FilterContext {
