@@ -15,7 +15,7 @@ import { LoadingButton } from "@mui/lab";
 import { LoginContext } from "../../contexts/LoginContext";
 import { apiGetProfile, apiPostLogin } from "../../services/api/AuthApi";
 import Snack from "../Snack/Snack";
-import { User } from "../../utils/Interfaces";
+import { LocalUser } from "../../utils/Interfaces";
 import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
@@ -52,7 +52,7 @@ const Auth = () => {
 
   const getUserInfo = (access_token: string) => {
     apiGetProfile(access_token)
-      .then((result: User) => {
+      .then((result: LocalUser) => {
         submitUserData({ ...result, access_token });
         if (result.role === "user") {
           navigate("/promoters-rating/undefiend/invoices/undefiend");

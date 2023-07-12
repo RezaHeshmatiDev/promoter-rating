@@ -17,6 +17,7 @@ import { LoginContext } from "../contexts/LoginContext";
 import Auth from "../components/Auth/Auth";
 import Users from "../pages/Users";
 import FilterMiddleware from "../middlewares/FilterMiddleware";
+import EditUser from "../pages/Users/Edit";
 
 const MainRouter = () => {
   const { getUserData } = useContext(LoginContext);
@@ -42,6 +43,7 @@ const MainRouter = () => {
 
             <Route path="/signup" element={<Signup />} />
             <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<EditUser />} />
           </>
         ) : (
           <>

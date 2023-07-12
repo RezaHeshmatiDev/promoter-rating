@@ -1,10 +1,10 @@
 import { useState, ReactNode, createContext, useEffect } from "react";
-import { User } from "../utils/Interfaces";
+import { LocalUser } from "../utils/Interfaces";
 import { getUser, setUser } from "../utils/tokenFuncs";
 
 type LoginContext = {
-  submitUserData: (user: User) => void;
-  getUserData: () => User | null;
+  submitUserData: (user: LocalUser) => void;
+  getUserData: () => LocalUser | null;
 };
 
 export const LoginContext = createContext<LoginContext>({} as LoginContext);
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export function LoginProvider({ children }: Props) {
-  const [userData, setUserData] = useState<User | null>(getUser());
+  const [userData, setUserData] = useState<LocalUser | null>(getUser());
 
   useEffect(() => {
     if (userData) {
@@ -26,11 +26,11 @@ export function LoginProvider({ children }: Props) {
     }
   }, [userData]);
 
-  const submitUserData = (user: User) => {
+  const submitUserData = (user: LocalUser) => {
     setUserData(user);
   };
 
-  const getUserData = (): User | null => {
+  const getUserData = (): LocalUser | null => {
     return userData;
   };
 

@@ -1,19 +1,12 @@
 import { useState, useEffect } from "react";
 import { TableRow, TableCell, Typography, Box, Card } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 import Page from "../../components/Page/Page";
 import Table from "../../components/Table/Table";
 import LoadingModal from "../../components/LoadingModal";
 import { apiGetUsers } from "../../services/api/UsersApi";
-
-interface User {
-  ID: number;
-  cashID?: number;
-  fullName: string;
-  notes?: string;
-  role: "user" | "admin";
-  userName: string;
-}
+import { User } from "../../utils/Interfaces";
 
 const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -63,8 +56,14 @@ const Users = () => {
 };
 
 const ListItem = ({ item }: { item: User }) => {
+  const navigate = useNavigate();
+
+  const onClickItem = () => {
+    navigate(`/users/${item.ID}`, { state: item });
+  };
+
   return (
-    <TableRow>
+    <TableRow onClick={onClickItem}>
       <TableCell>
         <Typography>{item.ID}</Typography>
       </TableCell>

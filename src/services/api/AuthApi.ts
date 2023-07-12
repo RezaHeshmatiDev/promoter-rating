@@ -51,3 +51,35 @@ export const apiPostSignup = (
     Axios.post("/auth/signup", formData).then(resolve).catch(reject);
   });
 };
+
+export const apiPatchUser = (
+  userId: number,
+  username: string,
+  password: string,
+  fullname: string,
+  role: string,
+  cash: string
+) => {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+
+    formData.append("userName", username);
+    formData.append("password", password);
+    formData.append("fullName", fullname);
+    formData.append("role", role);
+    formData.append("cashID", cash);
+
+    Axios.post(`/user/${userId}`, formData).then(resolve).catch(reject);
+  });
+};
+
+/**
+ *
+ * @param {number} id
+ * @returns {Promise}
+ */
+export const apiDeleteUser = (id: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.delete(`/user/${id}`).then(resolve).catch(reject);
+  });
+};

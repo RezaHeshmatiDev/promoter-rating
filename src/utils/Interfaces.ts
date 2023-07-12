@@ -39,11 +39,21 @@ export interface Promoter {
   rateAvg: number;
 }
 
-export interface User {
+export interface LocalUser {
   access_token: string;
   role: "admin" | "user";
   sub: number;
   username: string;
+}
+
+export interface User {
+  ID: number;
+  cashID?: number;
+  fullName: string;
+  notes?: string;
+  role: "user" | "admin";
+  userName: string;
+  password?: string;
 }
 
 export interface AutocompleteOption {
