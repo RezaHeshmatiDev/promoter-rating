@@ -30,6 +30,7 @@ const EditUser = () => {
   const [username, setUserName] = useState<string>(user.userName);
   const [fullname, setFullname] = useState<string>(user.fullName);
   const [password, setPassword] = useState<string>(user.password || "");
+  const [notes, setNotes] = useState<string>(user.notes || "");
   const [selectedRole, setSelectedRole] = useState<string>(user.role);
   const [selectedCash, setSelectedCash] = useState<string>("");
   const [cashs, setCashs] = useState<CashTurn[]>([]);
@@ -65,6 +66,9 @@ const EditUser = () => {
   const handleFullnameChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setFullname(e.target.value);
   };
+  const handleNotesChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    setNotes(e.target.value);
+  };
   const handleRoleChange = (event: SelectChangeEvent<typeof selectedRole>) => {
     setSelectedRole(event.target.value);
   };
@@ -79,6 +83,7 @@ const EditUser = () => {
       username,
       password,
       fullname,
+      notes,
       selectedRole,
       selectedCash
     )
@@ -103,6 +108,7 @@ const EditUser = () => {
     setUserName("");
     setPassword("");
     setFullname("");
+    setNotes("");
     setSelectedRole("");
     setSelectedCash("");
   };
@@ -140,6 +146,16 @@ const EditUser = () => {
                 onChange={handleFullnameChanged}
                 label={"نام و نام خانوادگی"}
                 sx={{ mt: 2 }}
+              />
+              {/** notes */}
+              <InputLabel id="notes-input-label" />
+              <TextField
+                id="notes-input-label"
+                value={notes}
+                onChange={handleNotesChanged}
+                label={"ملاحظات"}
+                sx={{ mt: 2 }}
+                multiline
               />
               {/** role */}
               <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>

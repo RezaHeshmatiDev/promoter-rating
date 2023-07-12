@@ -47,6 +47,7 @@ export const apiPostSignup = (
   username: string,
   password: string,
   fullname: string,
+  notes: string,
   role: string,
   cash: string
 ) => {
@@ -54,8 +55,9 @@ export const apiPostSignup = (
     const formData = new FormData();
 
     formData.append("userName", username);
-    formData.append("password", password);
+    formData.append("userPassword", password);
     formData.append("fullName", fullname);
+    formData.append("notes", notes);
     formData.append("role", role);
     formData.append("cashID", cash);
 
@@ -68,6 +70,7 @@ export const apiPatchUser = (
   username: string,
   password: string,
   fullname: string,
+  notes: string,
   role: string,
   cash: string
 ) => {
@@ -75,8 +78,9 @@ export const apiPatchUser = (
     const formData = new FormData();
 
     formData.append("userName", username);
-    formData.append("password", password);
+    if (password.length > 0) formData.append("userPassword", password);
     formData.append("fullName", fullname);
+    formData.append("notes", notes);
     formData.append("role", role);
     formData.append("cashID", cash);
 

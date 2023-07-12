@@ -25,6 +25,7 @@ const Signup = () => {
   const [username, setUserName] = useState<string>("");
   const [fullname, setFullname] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
   const [selectedRole, setSelectedRole] = useState<string>("");
   const [selectedCash, setSelectedCash] = useState<string>("");
   const [cashs, setCashs] = useState<CashTurn[]>([]);
@@ -55,6 +56,9 @@ const Signup = () => {
   const handleFullnameChanged = (e: ChangeEvent<HTMLInputElement>) => {
     setFullname(e.target.value);
   };
+  const handleNotesChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    setNotes(e.target.value);
+  };
   const handleRoleChange = (event: SelectChangeEvent<typeof selectedRole>) => {
     setSelectedRole(event.target.value);
   };
@@ -64,10 +68,22 @@ const Signup = () => {
 
   const submit = () => {
     setLoading(true);
-    apiPostSignup(username, password, fullname, selectedRole, selectedCash)
+    apiPostSignup(
+      username,
+      password,
+      fullname,
+      notes,
+      selectedRole,
+      selectedCash
+    )
       .then(() => {
         clearFields();
         Snack.success("ثبت نام کاربر با موفقیت انجام شد.");
+      })
+      .catch((e) => {
+        if (e.statusCode === 409) {
+          Snack.error("نام کاربری تکراریست. لطفا نام دیگری را انتخاب کنید.");
+        }
       })
       .finally(() => setLoading(false));
   };
@@ -76,6 +92,7 @@ const Signup = () => {
     setUserName("");
     setPassword("");
     setFullname("");
+    setNotes("");
     setSelectedRole("");
     setSelectedCash("");
   };
@@ -113,6 +130,16 @@ const Signup = () => {
                 onChange={handleFullnameChanged}
                 label={"نام و نام خانوادگی"}
                 sx={{ mt: 2 }}
+              />
+              {/** notes */}
+              <InputLabel id="notes-input-label" />
+              <TextField
+                id="notes-input-label"
+                value={notes}
+                onChange={handleNotesChanged}
+                label={"ملاحظات"}
+                sx={{ mt: 2 }}
+                multiline
               />
               {/** role */}
               <FormControl fullWidth variant="outlined" sx={{ mt: 2 }}>
