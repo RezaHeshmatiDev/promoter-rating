@@ -16,6 +16,7 @@ import Signup from "../components/Auth/Signup";
 import { LoginContext } from "../contexts/LoginContext";
 import Auth from "../components/Auth/Auth";
 import Users from "../pages/Users";
+import FilterMiddleware from "../middlewares/FilterMiddleware";
 
 const MainRouter = () => {
   const { getUserData } = useContext(LoginContext);
@@ -24,6 +25,7 @@ const MainRouter = () => {
 
   return (
     <Router>
+      <FilterMiddleware />
       <Routes>
         {isAdmin ? (
           <>
