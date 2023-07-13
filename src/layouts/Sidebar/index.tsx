@@ -1,21 +1,44 @@
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 import { Box, Drawer, useTheme, Typography, Button } from "@mui/material";
 
 import { SidebarContext } from "../../contexts/SidebarContext";
 import { removeUser } from "../../utils/tokenFuncs";
 import { LoginContext } from "../../contexts/LoginContext";
 import SidebarList from "./SidebarList";
+import AuthModal from "../../components/Auth/AuthModal";
+import DialogAlert from "../../components/DialogAlert";
 
 const Sidebar = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
   const { getUserData } = useContext(LoginContext);
   const closeSidebar = () => toggleSidebar();
 
+  const authModalRef = useRef<any>(null);
+
   const theme = useTheme();
 
   const isAdmin = getUserData()?.role === "admin";
 
   const onClickLogout = () => {
+    if (isAdmin) {
+      DialogAlert.showDialog({
+        title: "خروج از حساب کاربری",
+        message: `آیا اطمینان به خروج از حساب خود دارید؟`,
+        confirmBtn: "بلی",
+        cancelBtn: "خیر",
+        onClickConfirm: logoutUser,
+        color: "error",
+      });
+    } else {
+      authModalRef.current.toggleDialog();
+    }
+  };
+
+  const userIsAthenticated = () => {
+    logoutUser();
+  };
+
+  const logoutUser = () => {
     removeUser();
     window.location.replace("/");
   };
@@ -72,6 +95,8 @@ const Sidebar = () => {
           </Box>
         </Box>
       </Box>
+
+      <AuthModal ref={authModalRef} userIsAthenticated={userIsAthenticated} />
     </Drawer>
   );
 };

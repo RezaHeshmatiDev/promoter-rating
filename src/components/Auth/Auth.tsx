@@ -8,16 +8,31 @@ import {
   InputLabel,
   TextField,
   useTheme,
+  SxProps,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
+import { useNavigate } from "react-router-dom";
 
 import { LoginContext } from "../../contexts/LoginContext";
 import { apiGetProfile, apiPostLogin } from "../../services/api/AuthApi";
 import Snack from "../Snack/Snack";
 import { LocalUser } from "../../utils/Interfaces";
-import { useNavigate } from "react-router-dom";
 
-const Auth = () => {
+interface Props {
+  title?: string;
+  subheader?: string;
+  sx?: SxProps;
+  isLogin?: boolean;
+  userIsAthenticated?(): void;
+}
+
+const Auth = ({
+  title,
+  subheader,
+  sx,
+  userIsAthenticated,
+  isLogin = true,
+}: Props) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +56,11 @@ const Auth = () => {
       setLoading(true);
       apiPostLogin(username, password)
         .then((result) => {
-          getUserInfo(result.access_token);
+          if (isLogin) {
+            getUserInfo(result.access_token);
+          } else {
+            userIsAthenticated?.();
+          }
         })
         .catch(() => setLoading(false));
     } else {
@@ -68,10 +87,10 @@ const Auth = () => {
       display={"flex"}
       alignItems={"center"}
       justifyContent={"center"}
-      sx={{ bgcolor: theme.palette.primary.main }}
+      sx={{ bgcolor: theme.palette.primary.main, ...sx }}
     >
       <Card>
-        <CardHeader title={"ورود"} />
+        <CardHeader title={title || "ورود"} subheader={subheader} />
         <CardContent>
           <FormControl fullWidth>
             <InputLabel id="username-input-label" />
@@ -100,7 +119,7 @@ const Auth = () => {
             onClick={login}
             loading={loading}
           >
-            {"ورود"}
+            {title || "ورود"}
           </LoadingButton>
         </CardContent>
       </Card>

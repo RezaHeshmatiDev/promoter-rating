@@ -26,13 +26,7 @@ const SidebarList = () => {
     setOpen(!open);
   };
 
-  let menu: SidebarMenu[] = [
-    {
-      url: "/profile",
-      title: "پروفایل کاربری",
-      icon: PersonIcon,
-    },
-  ];
+  let menu: SidebarMenu[] = [];
 
   if (isAdmin) {
     menu = [
