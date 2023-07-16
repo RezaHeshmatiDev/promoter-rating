@@ -10,6 +10,7 @@ import {
   TableRow,
   Avatar,
   Button,
+  Grid,
 } from "@mui/material";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 
@@ -78,16 +79,24 @@ const PromoterDetails = () => {
   };
 
   const renderTitle = (
-    <Box display={"flex"} alignItems={"center"}>
+    <Box
+      display={"flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      mb={3}
+    >
       <Avatar
         variant={"circular"}
         src={`${baseURL}static/images/promoters/${promoterDetails?.promoterID}.png`}
+        sx={{
+          border: `1px solid ${theme.palette.common.black}`,
+          width: "50px",
+          height: "50px",
+        }}
       />
       <Box ml={1}>
-        <Typography color={theme.palette.common.white}>
-          {promoterDetails?.promoterName}
-        </Typography>
-        <Typography variant={"caption"} color={theme.palette.common.white}>
+        <Typography>{promoterDetails?.promoterName}</Typography>
+        <Typography variant={"caption"}>
           {promoterDetails?.promoterPhone}
         </Typography>
       </Box>
@@ -95,52 +104,56 @@ const PromoterDetails = () => {
   );
 
   return (
-    <Page title={renderTitle} hasBack={true}>
+    <Page title={"اپلیکیشن"} hasBack={true}>
       <Box sx={{ p: theme.spacing(3) }}>
+        {renderTitle}
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
-            <PromotersDropDown
-              selectedPromoter={selectedPromoter}
-              handlePromoterChanged={handlePromoterChanged}
-            />
-          </CardContent>
-          <CardContent>
-            <Table
-              error={hasError}
-              tableColumns={[
-                { id: "invoiceID", text: "شناسه فاکتور" },
-                { id: "invoiceDate", text: "تاریخ فاکتور" },
-                { id: "rate", text: "امتیاز" },
-                { id: "customerName", text: "نام مشتری" },
-                { id: "customerCellPhone", text: "شماره تماس مشتری" },
-                { id: "notes", text: "ملاحظات" },
-              ]}
-              filters={[
-                { id: "invoiceID", text: "شناسه فاکتور" },
-                { id: "customerName", text: "نام مشتری" },
-                { id: "customerCellPhone", text: "شماره تماس مشتری" },
-              ]}
-              onChange={onChange}
-            >
-              {promoterDetails?.data.map((item) => {
-                const onClickItem = () => {
-                  navigate(
-                    `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={12} md={3}>
+                <PromotersDropDown
+                  selectedPromoter={selectedPromoter}
+                  handlePromoterChanged={handlePromoterChanged}
+                />
+              </Grid>
+
+              <Table
+                error={hasError}
+                tableColumns={[
+                  { id: "invoiceID", text: "شناسه فاکتور" },
+                  { id: "invoiceDate", text: "تاریخ فاکتور" },
+                  { id: "rate", text: "امتیاز" },
+                  { id: "customerName", text: "نام مشتری" },
+                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                  { id: "notes", text: "ملاحظات" },
+                ]}
+                filters={[
+                  { id: "invoiceID", text: "شناسه فاکتور" },
+                  { id: "customerName", text: "نام مشتری" },
+                  { id: "customerCellPhone", text: "شماره تماس مشتری" },
+                ]}
+                onChange={onChange}
+              >
+                {promoterDetails?.data.map((item) => {
+                  const onClickItem = () => {
+                    navigate(
+                      `/promoters/${promoterDetails.promoterID}/invoices/${item.invoiceID}`
+                    );
+                  };
+
+                  return (
+                    <ListItem
+                      key={item.invoiceID}
+                      item={item}
+                      onClickItem={onClickItem}
+                      promoterID={promoterDetails.promoterID}
+                    />
                   );
-                };
+                })}
 
-                return (
-                  <ListItem
-                    key={item.invoiceID}
-                    item={item}
-                    onClickItem={onClickItem}
-                    promoterID={promoterDetails.promoterID}
-                  />
-                );
-              })}
-
-              <LoadingModal visible={loading} />
-            </Table>
+                <LoadingModal visible={loading} />
+              </Table>
+            </Grid>
           </CardContent>
         </Card>
       </Box>

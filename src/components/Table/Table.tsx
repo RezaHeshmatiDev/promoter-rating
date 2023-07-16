@@ -10,6 +10,7 @@ import {
   SxProps,
   Box,
   SelectChangeEvent,
+  Grid,
 } from "@mui/material";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -127,12 +128,14 @@ const Table = ({
           handleFilterChange={handleFilterChange}
         />
       ) : (
-        <NormalFilter
-          filters={filters}
-          onSearch={onSearch}
-          selectedFilter={selectedFilter}
-          handleFilterChange={handleFilterChange}
-        />
+        <Grid item xs={12} sm={12} md={9}>
+          <NormalFilter
+            filters={filters}
+            onSearch={onSearch}
+            selectedFilter={selectedFilter}
+            handleFilterChange={handleFilterChange}
+          />
+        </Grid>
       )}
 
       {error ? (
