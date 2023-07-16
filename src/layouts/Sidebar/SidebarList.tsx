@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef } from "react";
 import { List } from "@mui/material";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonIcon from "@mui/icons-material/Person";
@@ -16,14 +16,13 @@ export interface SidebarMenu {
 }
 
 const SidebarList = () => {
-  const [open, setOpen] = useState<boolean>(false);
-
+  const sidebarGroupListRefs = useRef<any[]>([]);
   const { getUserData } = useContext(LoginContext);
 
   const isAdmin = getUserData()?.role === "admin";
 
-  const toggleExpand = () => {
-    setOpen(!open);
+  const toggleExpand = (index: number) => {
+    sidebarGroupListRefs.current[index].toggle();
   };
 
   let menu: SidebarMenu[] = [];
@@ -38,9 +37,15 @@ const SidebarList = () => {
           icon: DashboardIcon,
         },
         {
-          url: "/promoters",
-          title: "بازاریاب ها",
+          title: "گزارشات",
           icon: PeopleAltIcon,
+          submenu: [
+            {
+              url: "/promoters",
+              title: "بازاریاب ها",
+              icon: PeopleAltIcon,
+            },
+          ],
         },
         {
           title: "مدیریت کاربران",
@@ -59,22 +64,24 @@ const SidebarList = () => {
       {menu.map((item, index) => {
         return (
           <List
-            sx={{ width: "100%" }}
             key={index}
+            sx={{ width: "100%" }}
             disablePadding
             subheader={
               item.submenu ? (
                 <SidebarListItem
                   item={item}
                   isGroup
-                  open={open}
-                  toggleExpand={toggleExpand}
+                  toggle={() => toggleExpand(index)}
                 />
               ) : null
             }
           >
             {item.submenu ? (
-              <SidebarGroupList menu={item.submenu} open={open} />
+              <SidebarGroupList
+                ref={(ref) => (sidebarGroupListRefs.current[index] = ref)}
+                menu={item.submenu}
+              />
             ) : (
               <SidebarListItem item={item} />
             )}

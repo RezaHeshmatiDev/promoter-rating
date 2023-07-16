@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import {
   ListItemButton,
   ListItemIcon,
@@ -15,23 +15,28 @@ import { SidebarMenu } from "./SidebarList";
 interface Props {
   item: SidebarMenu;
   isGroup?: boolean;
-  toggleExpand?(): void;
-  open?: boolean;
+  toggle?(): void;
+  // open?: boolean;
   sx?: SxProps;
 }
 
 const SidebarListItem = ({
   item,
   isGroup = false,
-  toggleExpand,
-  open,
+  toggle,
+  // open,
   sx,
 }: Props) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const { toggleSidebar } = useContext(SidebarContext);
   const closeSidebar = () => toggleSidebar();
   const navigate = useNavigate();
 
-  const Icon = item.icon;
+  const toggleExpand = () => {
+    setOpen(!open);
+    toggle?.();
+  };
 
   const onClickItem = () => {
     if (item.url) {
@@ -42,6 +47,8 @@ const SidebarListItem = ({
     }
   };
 
+  const Icon = item.icon;
+
   return (
     <ListItemButton sx={sx} onClick={onClickItem}>
       <ListItemIcon sx={{ minWidth: 32 }}>
@@ -49,7 +56,12 @@ const SidebarListItem = ({
       </ListItemIcon>
       <ListItemText>{item.title}</ListItemText>
       {isGroup && (
-        <ListItemIcon sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <ListItemIcon
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+          }}
+        >
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemIcon>
       )}
