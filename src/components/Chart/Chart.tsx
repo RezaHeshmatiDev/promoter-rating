@@ -4,7 +4,7 @@ import { Chart as ReactChart } from "react-chartjs-2";
 import { InvoiceData, InvoiceDataProps } from "../../pages/Dashboard";
 
 interface Props {
-  data?: InvoiceData;
+  data: Partial<InvoiceData>;
 }
 
 const Chart = ({ data }: Props) => {

@@ -38,19 +38,15 @@ export interface InvoiceDataProps {
 }
 
 const Dashboard = () => {
-  const [promoterData, setPromoterData] = useState<PromoterData | undefined>(
-    undefined
-  );
-  const [invoiceData, setInvoiceData] = useState<InvoiceData | undefined>(
-    undefined
-  );
+  const [promoterData, setPromoterData] = useState<Partial<PromoterData>>({});
+  const [invoiceData, setInvoiceData] = useState<Partial<InvoiceData>>({});
   const [loading, setLoading] = useState<boolean>(false);
-
-  const theme = useTheme();
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  const theme = useTheme();
 
   const fetchData = () => {
     setLoading(true);
@@ -72,63 +68,107 @@ const Dashboard = () => {
 
   return (
     <Page title={"اپلیکیشن"} hasBack={false}>
-      <Container maxWidth={"sm"} sx={{ my: 4 }}>
+      <Container maxWidth={"sm"} sx={{ py: 4 }}>
         <Chart data={invoiceData} />
 
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                bgcolor: theme.palette.grey[100],
-              }}
-            >
-              <CardHeader title={"بهترین ها"} />
-              <List>
-                {promoterData?.tops.map((item, index) => {
-                  return (
-                    <ListItem key={item.promoterID}>
-                      <ListItemText>{`${index + 1}- ${
-                        item.promoterName
-                      }`}</ListItemText>
-                      <ListItemText sx={{ textAlign: "right" }}>
-                        {item.rateAvg}
-                      </ListItemText>
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </Card>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                bgcolor: theme.palette.grey[100],
-              }}
-            >
-              <CardHeader title={"بدترین ها"} />
-              <List>
-                {promoterData?.bottoms.map((item, index) => {
-                  return (
-                    <ListItem key={item.promoterID}>
-                      <ListItemText>{`${index + 1}- ${
-                        item.promoterName
-                      }`}</ListItemText>
-                      <ListItemText sx={{ textAlign: "right" }}>
-                        {item.rateAvg}
-                      </ListItemText>
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </Card>
-          </Grid>
+          <DashboardInvoicesItem title={"دیروز"} data={invoiceData[1]} />
+          <DashboardInvoicesItem title={"امروز"} data={invoiceData[0]} />
+          <DashboardPromotersItem
+            bgcolor={theme.palette.success.light}
+            title={"بهترین بازاریاب ها"}
+            data={promoterData.tops || []}
+          />
+          <DashboardPromotersItem
+            bgcolor={theme.palette.error.light}
+            title={"ضعیف ترین بازاریاب ها"}
+            data={promoterData.bottoms || []}
+          />
         </Grid>
       </Container>
 
       <LoadingModal visible={loading} />
     </Page>
+  );
+};
+
+const DashboardPromotersItem = ({
+  data,
+  title,
+  bgcolor,
+}: {
+  data: Promoter[];
+  title: string;
+  bgcolor: string;
+}) => {
+  return (
+    <Grid item xs={12} sm={6}>
+      <Card
+        sx={{
+          borderRadius: 2,
+          bgcolor,
+        }}
+      >
+        <CardHeader title={title} titleTypographyProps={{ variant: "h6" }} />
+        <List>
+          {data.map((item, index) => {
+            return (
+              <ListItem key={item.promoterID}>
+                <ListItemText>{`${index + 1}- ${
+                  item.promoterName
+                }`}</ListItemText>
+                <ListItemText sx={{ textAlign: "right" }}>
+                  {item.rateAvg}
+                </ListItemText>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Card>
+    </Grid>
+  );
+};
+
+const DashboardInvoicesItem = ({
+  data,
+  title,
+}: {
+  data?: InvoiceDataProps;
+  title: string;
+}) => {
+  const theme = useTheme();
+
+  return (
+    <Grid item xs={12} sm={6}>
+      <Card
+        sx={{
+          borderRadius: 2,
+          bgcolor: theme.palette.grey[100],
+        }}
+      >
+        <CardHeader title={title} titleTypographyProps={{ variant: "h6" }} />
+        <List>
+          <ListItem>
+            <ListItemText>{"کل فاکتورها:‌"}</ListItemText>
+            <ListItemText sx={{ textAlign: "right" }}>
+              {data?.allInvoicesCount}
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText>{"نظر داده شده:‌"}</ListItemText>
+            <ListItemText sx={{ textAlign: "right" }}>
+              {data?.allInvoicesCount}
+            </ListItemText>
+          </ListItem>
+          <ListItem>
+            <ListItemText>{"نظر داده نشده:‌"}</ListItemText>
+            <ListItemText sx={{ textAlign: "right" }}>
+              {data?.allInvoicesCount}
+            </ListItemText>
+          </ListItem>
+        </List>
+      </Card>
+    </Grid>
   );
 };
 
