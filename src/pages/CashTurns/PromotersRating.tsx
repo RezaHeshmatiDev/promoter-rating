@@ -40,22 +40,11 @@ const PromotersRating = () => {
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <Box bgcolor={theme.palette.primary.main} p={theme.spacing(3)}>
-            <Typography
-              textAlign={"center"}
-              fontWeight={"600"}
-              color={theme.palette.success.main}
-              variant="h5"
-              maxWidth={"350px"}
-              mx={"auto"}
-            >
-              {"میزان رضایتمندی مشتری از پرسنل فروشگاه عاقبتی"}
-            </Typography>
             <Box
               display={"flex"}
               alignItems={"center"}
               justifyContent={"space-around"}
               color={theme.palette.common.white}
-              mt={2}
             >
               <Typography variant="h6">{`صندوق: ${cashName}`}</Typography>
               <Typography variant="h6">{`شماره فاکتور: ${invoiceID}`}</Typography>
@@ -68,7 +57,7 @@ const PromotersRating = () => {
         </Card>
       </Box>
 
-      <Typography fontWeight={"bold"} px={3}>
+      <Typography fontWeight={"bold"} px={3} pb={3}>
         {
           "لطفا با کلیک بر وضعیت های مشخص شده، به پرسنل مورد نظر امتیاز خود را ثبت کنید."
         }

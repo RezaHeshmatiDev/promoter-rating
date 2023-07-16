@@ -47,7 +47,11 @@ const ListItem = ({ item }: { item: Promoter }) => {
       <TableRow>
         <TableCell>
           <Box display={"flex"} alignItems={"center"}>
-            <Avatar variant={"circular"} src={item.promoterAvatar || ""} />
+            <Avatar
+              variant={"circular"}
+              src={item.promoterAvatar || ""}
+              sx={{ width: "70px", height: "70px" }}
+            />
             <Typography ml={1}>{item.promoterName}</Typography>
           </Box>
         </TableCell>
@@ -91,6 +95,7 @@ const RatesList = ({
         let opacity = 1;
         const selectedOpacity = 1;
         const unSelectedOpacity = 0.5;
+        const circleSize = 70;
 
         if (selectedRate) {
           opacity =
@@ -124,10 +129,11 @@ const RatesList = ({
                 opacity,
                 borderRadius: "50%",
                 bgcolor: item.color,
-                minWidth: 60,
-                width: 60,
-                height: 60,
+                minWidth: circleSize,
+                width: circleSize,
+                height: circleSize,
                 border: "2px solid #232323",
+                padding: 0,
 
                 ":hover": {
                   backgroundColor: item.color,
