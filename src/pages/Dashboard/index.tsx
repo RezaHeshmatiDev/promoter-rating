@@ -74,7 +74,7 @@ const Dashboard = () => {
   };
 
   return (
-    <Page title={"اپلیکیشن"} hasBack={false}>
+    <Page hasBack={false}>
       <Container maxWidth={"sm"} sx={{ py: 4 }}>
         <Chart data={invoiceData} />
 

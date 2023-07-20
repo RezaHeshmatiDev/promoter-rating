@@ -7,7 +7,7 @@ const Promoters = () => {
   const theme = useTheme();
 
   return (
-    <Page title="اپلیکیشن" hasBack={false}>
+    <Page hasBack={false}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <Box bgcolor={theme.palette.primary.main} p={theme.spacing(3)}>

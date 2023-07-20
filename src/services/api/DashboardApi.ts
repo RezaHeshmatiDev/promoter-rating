@@ -19,3 +19,13 @@ export const apiGetDashboardInvoices = (): Promise<any> => {
     Axios.get(`/dashboard/invoice`).then(resolve).catch(reject);
   });
 };
+
+/**
+ *
+ * @returns {Promise}
+ */
+export const apiGetCommons = (id: number): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    Axios.get(`/common?userID=${id}`).then(resolve).catch(reject);
+  });
+};

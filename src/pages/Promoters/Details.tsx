@@ -104,7 +104,7 @@ const PromoterDetails = () => {
   );
 
   return (
-    <Page title={"اپلیکیشن"} hasBack={true}>
+    <Page hasBack={true}>
       <Box sx={{ p: theme.spacing(3) }}>
         {renderTitle}
         <Card sx={{ borderRadius: 2 }}>
