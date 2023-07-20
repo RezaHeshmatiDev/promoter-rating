@@ -12,10 +12,11 @@ const Socket = () => {
       console.log("Connected");
     });
 
-    socket.on("invoiceData", (data: { cashID: number; invoiceId: number }) => {
+    socket.on("invoiceData", (data: { cashID: number; invoiceID: number }) => {
       const splitedURl = window.location.href.split("/");
-      if (splitedURl[splitedURl.length - 1] == data.cashID.toString())
-        window.location.href = `/promoters-rating/${data.cashID}/invoices/${data.invoiceId}`;
+      if (splitedURl[splitedURl.length - 3] == data.cashID.toString())
+        window.location.href = `/promoters-rating/${data.cashID}/invoices/${data.invoiceID}`;
+
     });
   };
 

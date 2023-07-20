@@ -73,7 +73,7 @@ const Auth = ({
       .then((result: LocalUser) => {
         submitUserData({ ...result, access_token });
         if (result.role === "user") {
-          navigate("/promoters-rating/undefiend/invoices/undefiend");
+          navigate(`/promoters-rating/${result.cash.id}/invoices/undefiend`);
         } else {
           navigate("/dashboard");
         }
