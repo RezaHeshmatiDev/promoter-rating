@@ -8,6 +8,13 @@ import {
   ListItem,
   ListItemText,
   useTheme,
+  TableContainer,
+  Table,
+  TableRow,
+  TableCell,
+  TableHead,
+  TableBody,
+  Typography,
 } from "@mui/material";
 
 import Page from "../../components/Page/Page";
@@ -72,8 +79,7 @@ const Dashboard = () => {
         <Chart data={invoiceData} />
 
         <Grid container spacing={3}>
-          <DashboardInvoicesItem title={"دیروز"} data={invoiceData[1]} />
-          <DashboardInvoicesItem title={"امروز"} data={invoiceData[0]} />
+          <InvoiceTable data={invoiceData} />
           <DashboardPromotersItem
             bgcolor={theme.palette.success.light}
             title={"بهترین بازاریاب ها"}
@@ -129,46 +135,63 @@ const DashboardPromotersItem = ({
   );
 };
 
-const DashboardInvoicesItem = ({
-  data,
-  title,
-}: {
-  data?: InvoiceDataProps;
-  title: string;
-}) => {
+const InvoiceTable = ({ data }: { data: Partial<InvoiceData> }) => {
+  const columns = ["", "کل فاکتور ها", "نظر داده شده", "نظر داده نشده"];
   const theme = useTheme();
 
   return (
-    <Grid item xs={12} sm={6}>
-      <Card
+    <TableContainer sx={{ mt: 4, ml: 3 }}>
+      <Table
         sx={{
-          borderRadius: 2,
+          "& .MuiTableCell-root": {
+            border: `1px solid ${theme.palette.grey[500]}`,
+          },
           bgcolor: theme.palette.grey[100],
         }}
       >
-        <CardHeader title={title} titleTypographyProps={{ variant: "h6" }} />
-        <List>
-          <ListItem>
-            <ListItemText>{"کل فاکتورها:‌"}</ListItemText>
-            <ListItemText sx={{ textAlign: "right" }}>
-              {data?.allInvoicesCount}
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>{"نظر داده شده:‌"}</ListItemText>
-            <ListItemText sx={{ textAlign: "right" }}>
-              {data?.allInvoicesCount}
-            </ListItemText>
-          </ListItem>
-          <ListItem>
-            <ListItemText>{"نظر داده نشده:‌"}</ListItemText>
-            <ListItemText sx={{ textAlign: "right" }}>
-              {data?.allInvoicesCount}
-            </ListItemText>
-          </ListItem>
-        </List>
-      </Card>
-    </Grid>
+        <TableHead>
+          <TableRow>
+            {columns.map((item, index) => {
+              return (
+                <TableCell key={index}>
+                  <Typography>{item}</Typography>
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <Typography>{"امروز"}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[0]?.allInvoicesCount}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[0]?.ratedInvoicesCount}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[0]?.unratedInvoices}</Typography>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>
+              <Typography>{"دیروز"}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[1]?.allInvoicesCount}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[1]?.ratedInvoicesCount}</Typography>
+            </TableCell>
+            <TableCell>
+              <Typography>{data[1]?.unratedInvoices}</Typography>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
