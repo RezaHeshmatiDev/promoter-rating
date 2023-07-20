@@ -9,7 +9,11 @@ import { apiGetCommons } from "../services/api/DashboardApi";
 import { LoginContext } from "./LoginContext";
 
 type HeaderContext = {
-  getHeaderData: () => void;
+  getHeaderData: () => {
+    value: string,
+    description: string,
+    userID: number
+  };
 };
 
 export const HeaderContext = createContext<HeaderContext>({} as HeaderContext);
