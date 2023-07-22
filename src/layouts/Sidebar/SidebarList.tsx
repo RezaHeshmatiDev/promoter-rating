@@ -41,18 +41,27 @@ const SidebarList = () => {
           icon: PeopleAltIcon,
           submenu: [
             {
-              url: "/promoters",
-              title: "بازاریاب ها",
+              url: "/promoters-analysis",
+              title: "عملکرد بازاریاب ها",
+              icon: PeopleAltIcon,
+            },
+            {
+              url: "/sales",
+              title: "فروش",
               icon: PeopleAltIcon,
             },
           ],
         },
         {
-          title: "مدیریت کاربران",
+          title: "اطلاعات پایه",
           icon: PersonIcon,
           submenu: [
-            { url: "/users", title: "لیست کاربران", icon: PersonIcon },
-            { url: "/signup", title: "ثبت نام", icon: PersonIcon },
+            { url: "/users", title: "کاربران", icon: PersonIcon },
+            {
+              url: "/promoters",
+              title: "بازاریاب ها",
+              icon: PeopleAltIcon,
+            },
           ],
         },
       ],
