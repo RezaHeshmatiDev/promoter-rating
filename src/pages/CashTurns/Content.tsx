@@ -16,6 +16,7 @@ import Table from "../../components/Table/Table";
 import { apiRatePromoters } from "../../services/api/PromotersApi";
 import LoadingModal from "../../components/LoadingModal";
 import Snack from "../../components/Snack/Snack";
+import { baseURL } from "../../services/Axios";
 
 const Content = ({ promoters }: { promoters: Promoter[] }) => {
   return (
@@ -49,8 +50,8 @@ const ListItem = ({ item }: { item: Promoter }) => {
           <Box display={"flex"} alignItems={"center"}>
             <Avatar
               variant={"circular"}
-              src={item.promoterAvatar || ""}
-              sx={{ width: "70px", height: "70px" }}
+              src={`${baseURL}static/images/promoters/${item.promoterID}.png`}
+              sx={{ width: "90px", height: "90px" }}
             />
             <Typography ml={1}>{item.promoterName}</Typography>
           </Box>
@@ -95,7 +96,7 @@ const RatesList = ({
         let opacity = 1;
         const selectedOpacity = 1;
         const unSelectedOpacity = 0.5;
-        const circleSize = 70;
+        const circleSize = 90;
 
         if (selectedRate) {
           opacity =
