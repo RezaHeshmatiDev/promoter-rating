@@ -11,7 +11,6 @@ import { LoginProvider } from "./contexts/LoginContext";
 import Socket from "./services/socket";
 import { FilterProvider } from "./contexts/FilterContext";
 import DialogAlert from "./components/DialogAlert";
-import { HeaderProvider } from "./contexts/HeaderContext";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -29,15 +28,13 @@ const App = () => {
         >
           <LoginProvider>
             <SidebarProvider>
-              <HeaderProvider>
-                <FilterProvider>
-                  <CssBaseline />
-                  <SnackHOC />
-                  <Socket />
-                  <DialogAlert />
-                  <MainRouter />
-                </FilterProvider>
-              </HeaderProvider>
+              <FilterProvider>
+                <CssBaseline />
+                <SnackHOC />
+                <Socket />
+                <DialogAlert />
+                <MainRouter />
+              </FilterProvider>
             </SidebarProvider>
           </LoginProvider>
         </SnackbarProvider>
