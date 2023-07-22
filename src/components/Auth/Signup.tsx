@@ -43,7 +43,9 @@ const Signup = () => {
   const getCashs = async () => {
     setLoading(true);
     apiGetCashs()
-      .then((result) => setCashs(result))
+      .then((result) => {
+        if (result) setCashs(result);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -170,7 +172,7 @@ const Signup = () => {
                   onChange={handleCashChange}
                   label={"انتخاب صندوق"}
                 >
-                  {cashs.map((item) => {
+                  {cashs?.map((item) => {
                     return (
                       <MenuItem key={item.id} value={item.id}>
                         {item.name}

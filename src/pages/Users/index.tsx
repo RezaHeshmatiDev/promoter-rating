@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
-import { TableRow, TableCell, Typography, Box, Card } from "@mui/material";
+import {
+  TableRow,
+  TableCell,
+  Typography,
+  Box,
+  Card,
+  CardHeader,
+  Button,
+  Container,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import Page from "../../components/Page/Page";
@@ -12,6 +21,8 @@ const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [hasError, setHasError] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUsers();
@@ -28,29 +39,43 @@ const Users = () => {
       .finally(() => setLoading(false));
   };
 
+  const onClick = () => {
+    navigate("/signup");
+  };
+
   return (
     <Page title={"کاربران"}>
-      <Box sx={{ p: 3 }}>
-        <Card sx={{ borderRadius: 2 }}>
-          <Table
-            tableColumns={[
-              { id: "ID", text: "شناسه" },
-              { id: "cashID", text: "شناسه صندوق" },
-              { id: "fullName", text: "نام" },
-              { id: "notes", text: "ملاحظات" },
-              { id: "role", text: "دسترسی" },
-              { id: "userName", text: "نام کاربری" },
-            ]}
-            error={hasError}
-          >
-            {users.map((item) => {
-              return <ListItem key={item.ID} item={item} />;
-            })}
+      <Container maxWidth={"lg"}>
+        <Box sx={{ py: 2 }}>
+          <Card sx={{ borderRadius: 2 }}>
+            <CardHeader
+              title={"کاربران"}
+              action={
+                <Button variant={"contained"} onClick={onClick}>
+                  {"ثبت نام کاربر جدید"}
+                </Button>
+              }
+            />
+            <Table
+              tableColumns={[
+                { id: "ID", text: "شناسه" },
+                { id: "cashID", text: "شناسه صندوق" },
+                { id: "fullName", text: "نام" },
+                { id: "notes", text: "ملاحظات" },
+                { id: "role", text: "دسترسی" },
+                { id: "userName", text: "نام کاربری" },
+              ]}
+              error={hasError}
+            >
+              {users.map((item) => {
+                return <ListItem key={item.ID} item={item} />;
+              })}
 
-            <LoadingModal visible={loading} />
-          </Table>
-        </Card>
-      </Box>
+              <LoadingModal visible={loading} />
+            </Table>
+          </Card>
+        </Box>
+      </Container>
     </Page>
   );
 };
