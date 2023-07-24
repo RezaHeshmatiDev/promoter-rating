@@ -110,7 +110,7 @@ const PromoterDetails = () => {
         <Card sx={{ borderRadius: 2 }}>
           <CardContent>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={12} md={3}>
+              <Grid item xs={12} sm={12} md={3} lg={2}>
                 <PromotersDropDown
                   selectedPromoter={selectedPromoter}
                   handlePromoterChanged={handlePromoterChanged}
@@ -129,6 +129,7 @@ const PromoterDetails = () => {
                 ]}
                 filters={[
                   { id: "invoiceID", text: "شناسه فاکتور" },
+                  { id: "invoiceDate", text: "تاریخ فاکتور" },
                   { id: "customerName", text: "نام مشتری" },
                   { id: "customerCellPhone", text: "شماره تماس مشتری" },
                 ]}

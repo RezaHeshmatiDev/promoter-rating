@@ -95,7 +95,7 @@ const MultipleFilters = ({
       </Grid>
 
       <Grid item lg={1.5} md={3} sm={4} display={"flex"} alignItems={"center"}>
-        <Button variant="contained" onClick={onClickSearch} size="small">
+        <Button variant="contained" onClick={onClickSearch}>
           {"جستجو"}
         </Button>
         <Button
@@ -103,7 +103,6 @@ const MultipleFilters = ({
           sx={{ ml: 1, paddingRight: "8px", paddingLeft: "8px" }}
           variant="contained"
           onClick={clearFilters}
-          size="small"
         >
           {"حذف فیلتر"}
         </Button>

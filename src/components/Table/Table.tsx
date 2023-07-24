@@ -115,20 +115,23 @@ const Table = ({
 
   const ableToSearchTwoValues =
     selectedFilter?.filterCol === "rateSum" ||
+    selectedFilter?.filterCol === "invoiceDate" ||
     selectedFilter?.filterCol === "invoiceCount" ||
     selectedFilter?.filterCol === "rateAvg";
 
   return (
     <>
       {ableToSearchTwoValues ? (
-        <MultipleFilters
-          filters={filters}
-          onSearch={onSearch}
-          selectedFilter={selectedFilter}
-          handleFilterChange={handleFilterChange}
-        />
+        <Grid item xs={12} sm={12} md={9} lg={10}>
+          <MultipleFilters
+            filters={filters}
+            onSearch={onSearch}
+            selectedFilter={selectedFilter}
+            handleFilterChange={handleFilterChange}
+          />
+        </Grid>
       ) : (
-        <Grid item xs={12} sm={12} md={9}>
+        <Grid item xs={12} sm={12} md={9} lg={10}>
           <NormalFilter
             filters={filters}
             onSearch={onSearch}
