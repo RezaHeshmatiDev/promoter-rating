@@ -25,6 +25,7 @@ import {
 } from "../../services/api/DashboardApi";
 import { Promoter } from "../../utils/Interfaces";
 import LoadingModal from "../../components/LoadingModal";
+import { useNavigate } from "react-router-dom";
 
 interface PromoterData {
   tops: Promoter[];
@@ -107,6 +108,8 @@ const DashboardPromotersItem = ({
   title: string;
   bgcolor: string;
 }) => {
+  const navigate = useNavigate();
+
   return (
     <Grid item xs={12} sm={6}>
       <Card
@@ -118,8 +121,12 @@ const DashboardPromotersItem = ({
         <CardHeader title={title} titleTypographyProps={{ variant: "h6" }} />
         <List>
           {data.map((item, index) => {
+            const onClickItem = () => {
+              navigate(`/promoters/${item.promoterID}`);
+            };
+
             return (
-              <ListItem key={item.promoterID}>
+              <ListItem key={item.promoterID} onClick={onClickItem}>
                 <ListItemText>{`${index + 1}- ${
                   item.promoterName
                 }`}</ListItemText>
