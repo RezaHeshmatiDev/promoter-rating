@@ -8,13 +8,14 @@ import { HeaderHeight } from "../../utils/Constants";
 interface Props extends HeaderProps {
   children?: ReactNode | ReactNode[];
   sx?: SxProps;
+  invisibleHeader?: boolean
 }
 
-const Page = ({ children, sx, ...props }: Props) => {
+const Page = ({ children, sx, invisibleHeader, ...props }: Props) => {
   return (
     <HeaderProvider>
-      <Header {...props} />
-      <Box sx={sx} style={{ paddingTop: HeaderHeight }}>
+      {!invisibleHeader && <Header {...props} />}
+      <Box sx={sx} style={{ paddingTop: invisibleHeader ? 0 : HeaderHeight }}>
         {children}
       </Box>
     </HeaderProvider>
