@@ -36,7 +36,7 @@ const PromotersRating = () => {
   const theme = useTheme();
 
   return (
-    <Page hasBack={false}>
+    <Page hasBack={false} invisibleHeader={true}>
       <Box sx={{ p: theme.spacing(3) }}>
         <Card sx={{ borderRadius: 2 }}>
           <Box bgcolor={theme.palette.primary.main} p={theme.spacing(3)}>
