@@ -131,7 +131,7 @@ const DashboardPromotersItem = ({
                   item.promoterName
                 }`}</ListItemText>
                 <ListItemText sx={{ textAlign: "right" }}>
-                  {item.rateAvg}
+                  {item.rateAvg.toFixed(2)}
                 </ListItemText>
               </ListItem>
             );
