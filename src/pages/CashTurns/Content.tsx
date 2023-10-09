@@ -18,7 +18,15 @@ import LoadingModal from "../../components/LoadingModal";
 import Snack from "../../components/Snack/Snack";
 import { baseURL } from "../../services/Axios";
 
-const Content = ({ promoters }: { promoters: Promoter[] }) => {
+const Content = ({
+  promoters,
+  setTimer,
+  setSurveyStarted,
+}: {
+  promoters: Promoter[];
+  setTimer: React.Dispatch<React.SetStateAction<number>>;
+  setSurveyStarted: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   return (
     <Table
       tableColumns={[
@@ -27,17 +35,34 @@ const Content = ({ promoters }: { promoters: Promoter[] }) => {
       ]}
     >
       {promoters.map((item) => {
-        return <ListItem key={item.promoterID} item={item} />;
+        return (
+          <ListItem
+            key={item.promoterID}
+            item={item}
+            setTimer={setTimer}
+            setSurveyStarted={setSurveyStarted}
+          />
+        );
       })}
     </Table>
   );
 };
 
-const ListItem = ({ item }: { item: Promoter }) => {
+const ListItem = ({
+  item,
+  setTimer,
+  setSurveyStarted,
+}: {
+  item: Promoter;
+  setTimer: React.Dispatch<React.SetStateAction<number>>;
+  setSurveyStarted: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const onSelectedRate = async (rate: Rate) => {
     setLoading(true);
+    setSurveyStarted(true);
+    setTimer(parseInt(localStorage.getItem("timer") || "15"));
     apiRatePromoters(item.promoterID, item.invoiceID, rate.rate)
       .then((result) => Snack.success(result.message))
       .finally(() => setLoading(false));
@@ -51,7 +76,7 @@ const ListItem = ({ item }: { item: Promoter }) => {
             <Avatar
               variant={"circular"}
               src={`${baseURL}static/images/promoters/${item.promoterID}.png`}
-              sx={{ width: "90px", height: "90px" }}
+              sx={{ width: "80px", height: "80px" }}
             />
             <Typography ml={1}>{item.promoterName}</Typography>
           </Box>
@@ -96,7 +121,7 @@ const RatesList = ({
         let opacity = 1;
         const selectedOpacity = 1;
         const unSelectedOpacity = 0.5;
-        const circleSize = 90;
+        const circleSize = 85;
 
         if (selectedRate) {
           opacity =
@@ -142,7 +167,7 @@ const RatesList = ({
               }}
             >
               <Typography
-                fontWeight={"600"}
+                fontWeight={"500"}
                 px={0.5}
                 variant="caption"
                 textAlign={"center"}
