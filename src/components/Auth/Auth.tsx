@@ -57,6 +57,7 @@ const Auth = ({
       apiPostLogin(username, password)
         .then((result) => {
           if (isLogin) {
+            localStorage.setItem("timer", result.params[0].value);
             getUserInfo(result.access_token);
           } else {
             userIsAthenticated?.();
