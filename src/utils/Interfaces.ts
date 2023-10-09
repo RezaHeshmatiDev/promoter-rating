@@ -49,6 +49,12 @@ export interface LocalUser {
     id: number;
     name: string;
   };
+  params: {
+    ID: number;
+    value: string;
+    description: string;
+    userID: number;
+  }[];
 }
 
 export interface User {
